@@ -68,7 +68,7 @@ public class ListaPaciente {
         try {
             Connection conn = Conexion.getInstance().getConexion();
             Statement stmt = conn.createStatement();
-            String sql = "SELECT p.dni, p.nombre, p.apellidoPaterno, p.apellidoMaterno, p.fechaNacimiento, genero.nombre, p.direccion, p.telefono, pa.fechaEntrada, pa.fechaSalida\n" +
+            String sql = "SELECT p.dni, p.nombre, p.apellidoPaterno, p.apellidoMaterno, p.fechaNacimiento, genero.nombre as genero, p.direccion, p.telefono, pa.fechaEntrada, pa.fechaSalida\n" +
                 "FROM personas.persona p \n" +
                 "INNER JOIN personas.paciente pa ON p.idPersona = pa.idPersona\n" +
                 "INNER JOIN personas.genero genero ON p.idgenero = genero.idgenero";
