@@ -13,6 +13,9 @@ public class Login extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.conexionDB = conexionDB;
         
+        // Cargar imagen login
+        utilidades.Utilidades.setImageLabel(lblImagenLogin, "src/imagenes/login.png");
+        
         // default
         txtCorreo.setText("admin");
         txtContraseña.setText("1234");
@@ -44,9 +47,11 @@ public class Login extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         txtContraseña = new javax.swing.JPasswordField();
         jPanel1 = new javax.swing.JPanel();
+        lblImagenLogin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         contenedorIniciarSes.setBackground(new java.awt.Color(255, 255, 255));
@@ -63,9 +68,12 @@ public class Login extends javax.swing.JFrame {
         lblCorreo.setText("Correo:");
 
         txtCorreo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtCorreo.setForeground(new java.awt.Color(27, 55, 79));
+        txtCorreo.setCaretColor(new java.awt.Color(27, 55, 79));
         txtCorreo.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        txtCorreo.setSelectedTextColor(new java.awt.Color(255, 255, 255));
 
-        btnLogin.setBackground(new java.awt.Color(51, 153, 255));
+        btnLogin.setBackground(new java.awt.Color(27, 55, 79));
         btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Ingresar");
@@ -128,11 +136,13 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(lblImagenLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 537, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addComponent(lblImagenLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 500));
@@ -166,6 +176,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblCorreo;
+    private javax.swing.JLabel lblImagenLogin;
     private javax.swing.JLabel lblIniciarSes;
     private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtCorreo;

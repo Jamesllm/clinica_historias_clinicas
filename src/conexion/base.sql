@@ -1,8 +1,16 @@
-CREATE TABLE historias_clinicas;
+CREATE DATABASE historias_clinicas;
 
 CREATE SCHEMA personas;
 CREATE SCHEMA clinica;
 CREATE SCHEMA pagos;
+
+
+CREATE TABLE personas.genero (
+  idGenero SERIAL PRIMARY KEY,
+  nombre VARCHAR(50),
+  estado BOOLEAN DEFAULT TRUE
+);
+
 
 CREATE TABLE personas.persona (
   idPersona SERIAL PRIMARY KEY,
@@ -13,7 +21,7 @@ CREATE TABLE personas.persona (
   direccion TEXT,
   telefono VARCHAR(20),
   dni VARCHAR(15),
-  sexo VARCHAR(10)
+  idGenero INT REFERENCES personas.genero(idGenero)
 );
 
 CREATE TABLE clinica.especialidad (
@@ -57,3 +65,7 @@ CREATE TABLE pagos.comprobantePago (
   fechaEmision DATE,
   formaPago VARCHAR(20)
 );
+
+
+INSERT INTO personas.genero(nombre) VALUES('Masculino');
+INSERT INTO personas.genero(nombre) VALUES('Femenino');

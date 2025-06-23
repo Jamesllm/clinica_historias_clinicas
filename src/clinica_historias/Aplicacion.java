@@ -3,19 +3,46 @@ package clinica_historias;
 import conexion.Conexion;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import clases.Genero;
+import estructuras.ArregloGenero;
+import estructuras.ListaPaciente;
 
 public class Aplicacion extends javax.swing.JFrame {
 
     private Conexion conexionDB;
+    private ArregloGenero arregloGenero;
+    private ListaPaciente listaPaciente;
 
     public Aplicacion(Conexion conexionDB) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.conexionDB = conexionDB;
-        
-        // Cargar los generos:
-        jcbxGenero.addItem("Masculino");
-        jcbxGenero.addItem("Femenino");
+
+        // Inicializar estructuras de datos
+        arregloGenero = new ArregloGenero();
+        listaPaciente = new ListaPaciente();
+
+        // Cargar géneros desde la base de datos
+        arregloGenero.cargarDesdeBD();
+        jcbxGenero.removeAllItems();
+        for (int i = 0; i < arregloGenero.getCount(); i++) {
+            Genero genero = arregloGenero.getGeneros()[i];
+            if (!genero.getNombre().equals("INACTIVO")) {
+                jcbxGenero.addItem(genero);
+            }
+        }
+
+        // Cargar pacientes desde la base de datos
+        listaPaciente.cargarDesdeBD();
+        // Ejemplo: mostrar pacientes en consola
+        listaPaciente.mostrar();
+
+        // Ejemplo de eliminación lógica de género (por id)
+        // arregloGenero.eliminarLogico(1); // Elimina lógicamente el género con id 1
+        // arregloGenero.guardarEnBD(); // Guarda los cambios en la base de datos
+
+        // Ejemplo de eliminación de paciente en memoria (por DNI)
+        // listaPaciente.eliminarPorDni("12345678");
 
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
         this.addWindowListener(new WindowAdapter() {
@@ -93,9 +120,15 @@ public class Aplicacion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Historias Clinicas");
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel4.setBackground(new java.awt.Color(27, 55, 79));
+
         lblCambio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblCambio.setForeground(new java.awt.Color(255, 255, 255));
         lblCambio.setText("Pacientes");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -103,9 +136,9 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addComponent(lblCambio)
-                .addContainerGap(875, Short.MAX_VALUE))
+                .addContainerGap(883, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,7 +320,7 @@ public class Aplicacion extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 545, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 18, Short.MAX_VALUE))
@@ -434,7 +467,7 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 50));
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 40));
 
         jMenu1.setText("Cuenta");
 
@@ -525,7 +558,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JComboBox<String> jcbxGenero;
+    private javax.swing.JComboBox<Genero> jcbxGenero;
     private javax.swing.JComboBox<String> jcbxGenero1;
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lbl2;
