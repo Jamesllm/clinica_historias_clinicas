@@ -22,20 +22,8 @@ public class Aplicacion extends javax.swing.JFrame {
         arregloGenero = new ArregloGenero();
         listaPaciente = new ListaPaciente();
 
-        // Cargar géneros desde la base de datos
-        arregloGenero.cargarDesdeBD();
-        jcbxGenero.removeAllItems();
-        for (int i = 0; i < arregloGenero.getCount(); i++) {
-            Genero genero = arregloGenero.getGeneros()[i];
-            if (!genero.getNombre().equals("INACTIVO")) {
-                jcbxGenero.addItem(genero);
-            }
-        }
-
-        // Cargar pacientes desde la base de datos
-        listaPaciente.cargarDesdeBD();
-        // Ejemplo: mostrar pacientes en consola
-        listaPaciente.mostrar();
+        cargarGenerosEnCombo();
+        cargarPacientesEnTabla();
 
         // Ejemplo de eliminación lógica de género (por id)
         // arregloGenero.eliminarLogico(1); // Elimina lógicamente el género con id 1
@@ -52,6 +40,42 @@ public class Aplicacion extends javax.swing.JFrame {
                 System.exit(0);
             }
         });
+    }
+
+    private void cargarGenerosEnCombo() {
+        arregloGenero.cargarDesdeBD();
+        jcbxGenero.removeAllItems();
+        for (int i = 0; i < arregloGenero.getCount(); i++) {
+            Genero genero = arregloGenero.getGeneros()[i];
+            if (genero.isEstado()) {
+                jcbxGenero.addItem(genero);
+            }
+        }
+    }
+
+    private void cargarPacientesEnTabla() {
+        listaPaciente.cargarDesdeBD();
+        javax.swing.table.DefaultTableModel modeloTablaPaciente = new javax.swing.table.DefaultTableModel(
+            new Object[]{"DNI", "Nombre", "Apellido P.", "Apellido M.", "Fecha N.", "Género", "Dirección", "Teléfono", "Fecha E.", "Fecha S."}, 0
+        );
+        estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+        while (actual != null) {
+            clases.Paciente p = actual.paciente;
+            modeloTablaPaciente.addRow(new Object[]{
+                p.getDni(),
+                p.getNombre(),
+                p.getApellidoPaterno(),
+                p.getApellidoMaterno(),
+                p.getFechaNacimiento(),
+                p.getGenero(),
+                p.getDireccion(),
+                p.getTelefono(),
+                p.getFechaEntrada(),
+                p.getFechaSalida()
+            });
+            actual = actual.siguiente;
+        }
+        tablaPacientes.setModel(modeloTablaPaciente);
     }
 
     /**
@@ -90,7 +114,7 @@ public class Aplicacion extends javax.swing.JFrame {
         txtApellidos1 = new javax.swing.JTextField();
         lbl6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaPacientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         lbl7 = new javax.swing.JLabel();
@@ -126,29 +150,14 @@ public class Aplicacion extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setBackground(new java.awt.Color(27, 55, 79));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblCambio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCambio.setForeground(new java.awt.Color(255, 255, 255));
         lblCambio.setText("Pacientes");
+        jPanel4.add(lblCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblCambio)
-                .addContainerGap(883, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblCambio)
-                .addGap(499, 499, 499))
-        );
-
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 970, 40));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1210, 50));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -295,35 +304,44 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "DNI"
+                "ID", "DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Fecha Nacimiento", "Genero", "Direccion", "Telefono"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaPacientes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 303, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 545, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PanelTab.addTab("tab1", jPanel1);
@@ -431,7 +449,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 303, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
@@ -447,7 +465,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
         PanelTab.addTab("tab2", jPanel2);
 
-        getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 64, 970, 580));
+        getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 64, 1200, 580));
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
@@ -467,7 +485,7 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 40));
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 30));
 
         jMenu1.setText("Cuenta");
 
@@ -554,7 +572,6 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
@@ -569,6 +586,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lbl7;
     private javax.swing.JLabel lbl8;
     private javax.swing.JLabel lblCambio;
+    private javax.swing.JTable tablaPacientes;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtApellidos1;
     private javax.swing.JTextField txtDNI;

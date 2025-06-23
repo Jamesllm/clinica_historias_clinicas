@@ -6,20 +6,23 @@ import java.util.Date;
 import conexion.Conexion;
 
 public class ListaPaciente {
+    public static class NodoPaciente {
+        public Paciente paciente;
+        public NodoPaciente siguiente;
+        public NodoPaciente(Paciente paciente) {
+            this.paciente = paciente;
+            this.siguiente = null;
+        }
+    }
+
     private NodoPaciente cabeza;
 
     public ListaPaciente() {
         cabeza = null;
     }
 
-    // Nodo interno
-    private static class NodoPaciente {
-        Paciente paciente;
-        NodoPaciente siguiente;
-        NodoPaciente(Paciente paciente) {
-            this.paciente = paciente;
-            this.siguiente = null;
-        }
+    public NodoPaciente getCabeza() {
+        return cabeza;
     }
 
     // Agregar al final
