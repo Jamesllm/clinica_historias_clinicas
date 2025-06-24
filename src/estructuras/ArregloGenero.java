@@ -6,18 +6,18 @@ import conexion.Conexion;
 
 public class ArregloGenero {
     private Genero[] generos;
-    private int count;
+    private int contador;
     private final int CAPACIDAD = 5;
 
     public ArregloGenero() {
         generos = new Genero[CAPACIDAD];
-        count = 0;
+        contador = 0;
     }
 
     // Insertar un nuevo género
     public boolean insertar(Genero genero) {
-        if (count < CAPACIDAD) {
-            generos[count++] = genero;
+        if (contador < CAPACIDAD) {
+            generos[contador++] = genero;
             return true;
         }
         return false;
@@ -25,7 +25,7 @@ public class ArregloGenero {
 
     // Eliminación lógica (marcar como inactivo)
     public boolean eliminarLogico(int idGenero) {
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < contador; i++) {
             if (generos[i] != null && generos[i].getIdGenero() == idGenero) {
                 generos[i].setEstado(false);
                 return true;
@@ -36,8 +36,8 @@ public class ArregloGenero {
 
     // Ordenar por nombre (burbuja)
     public void ordenarPorNombre() {
-        for (int i = 0; i < count - 1; i++) {
-            for (int j = 0; j < count - i - 1; j++) {
+        for (int i = 0; i < contador - 1; i++) {
+            for (int j = 0; j < contador - i - 1; j++) {
                 if (generos[j].getNombre().compareToIgnoreCase(generos[j + 1].getNombre()) > 0) {
                     Genero temp = generos[j];
                     generos[j] = generos[j + 1];
@@ -49,7 +49,7 @@ public class ArregloGenero {
 
     // Búsqueda binaria por nombre (debe estar ordenado)
     public Genero buscarPorNombre(String nombre) {
-        int left = 0, right = count - 1;
+        int left = 0, right = contador - 1;
         while (left <= right) {
             int mid = (left + right) / 2;
             int cmp = generos[mid].getNombre().compareToIgnoreCase(nombre);
@@ -66,12 +66,12 @@ public class ArregloGenero {
             Connection conn = Conexion.getInstance().getConexion();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idGenero, nombre, estado FROM personas.genero WHERE estado = true");
-            count = 0;
-            while (rs.next() && count < CAPACIDAD) {
+            contador = 0;
+            while (rs.next() && contador < CAPACIDAD) {
                 int id = rs.getInt("idGenero");
                 String nombre = rs.getString("nombre");
                 boolean estado = rs.getBoolean("estado");
-                generos[count++] = new Genero(id, nombre, estado);
+                generos[contador++] = new Genero(id, nombre, estado);
             }
             rs.close();
             stmt.close();
@@ -80,11 +80,11 @@ public class ArregloGenero {
         }
     }
 
-    // Guardar todos los géneros en la base de datos (ejemplo simple)
+    // Guardar todos los géneros en la base de datos 
     public void guardarEnBD() {
         try {
             Connection conn = Conexion.getInstance().getConexion();
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < contador; i++) {
                 Genero g = generos[i];
                 PreparedStatement ps = conn.prepareStatement(
                     "INSERT INTO personas.genero (idGenero, nombre, estado) VALUES (?, ?, ?) ON CONFLICT (idGenero) DO UPDATE SET nombre = EXCLUDED.nombre, estado = EXCLUDED.estado");
@@ -104,6 +104,6 @@ public class ArregloGenero {
         return generos;
     }
     public int getCount() {
-        return count;
+        return contador;
     }
 } 

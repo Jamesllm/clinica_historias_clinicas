@@ -49,6 +49,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     txtApellidoPaterno.setText(tablaPacientes.getValueAt(row, 2).toString());
                     txtApellidoMaterno.setText(tablaPacientes.getValueAt(row, 3).toString());
                     txtFechaNacimiento.setText(tablaPacientes.getValueAt(row, 4).toString());
+
                     // Seleccionar género en el combo
                     String genero = tablaPacientes.getValueAt(row, 5).toString();
                     for (int i = 0; i < jcbxGenero.getItemCount(); i++) {
@@ -568,18 +569,18 @@ public class Aplicacion extends javax.swing.JFrame {
         String genero = jcbxGenero.getSelectedItem() != null ? jcbxGenero.getSelectedItem().toString() : "";
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
-        
+
         try {
             java.util.Date fechaNacimiento = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
             java.util.Date fechaEntrada = new java.util.Date(); // Fecha actual como entrada
             java.util.Date fechaSalida = new java.util.Date(); // Por defecto igual a entrada
             clases.Paciente paciente = new clases.Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
-            
+
             listaPaciente.guardarEnBD(paciente);
-            
+
             cargarPacientesEnTabla();
             limpiarInputsPaciente();
-            
+
             tablaPacientes.clearSelection();
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage());
@@ -596,7 +597,7 @@ public class Aplicacion extends javax.swing.JFrame {
         String genero = jcbxGenero.getSelectedItem().toString();
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
-        
+
         try {
             java.util.Date fechaNacimiento = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
             // Buscar el paciente en la lista
