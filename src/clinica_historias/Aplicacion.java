@@ -75,6 +75,18 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }
 
+    private void cargarPacientesEnCombo() {
+        jcbxPaciente.removeAllItems();
+        listaPaciente.cargarDesdeBD();
+        estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+        while (actual != null) {
+            clases.Paciente p = actual.paciente;
+            String nombreCompleto = p.getDni() + " - " + p.getNombre() + " " + p.getApellidoPaterno() + " " + p.getApellidoMaterno();
+            jcbxPaciente.addItem(nombreCompleto);
+            actual = actual.siguiente;
+        }
+    }
+
     private void cargarPacientesEnTabla() {
         listaPaciente.cargarDesdeBD();
         javax.swing.table.DefaultTableModel modeloTablaPaciente = new javax.swing.table.DefaultTableModel(
@@ -98,6 +110,7 @@ public class Aplicacion extends javax.swing.JFrame {
             actual = actual.siguiente;
         }
         tablaPacientes.setModel(modeloTablaPaciente);
+        cargarPacientesEnCombo();
     }
 
     /**
@@ -115,7 +128,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         lblCambio = new javax.swing.JLabel();
         PanelTab = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel_Paciente = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lbl1 = new javax.swing.JLabel();
         txtDNI = new javax.swing.JTextField();
@@ -131,20 +144,20 @@ public class Aplicacion extends javax.swing.JFrame {
         txtTelefono = new javax.swing.JTextField();
         Genero1 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
-        btnGuardar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
+        btnGuardarPaciente = new javax.swing.JButton();
+        btnActualizarPaciente = new javax.swing.JButton();
         txtApellidoMaterno = new javax.swing.JTextField();
         lbl6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPacientes = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel_Consultas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         lbl7 = new javax.swing.JLabel();
         lbl8 = new javax.swing.JLabel();
         Genero2 = new javax.swing.JLabel();
-        jcbxGenero1 = new javax.swing.JComboBox<>();
-        btnGuardar1 = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
+        jcbxPaciente = new javax.swing.JComboBox<>();
+        btnGuardarConsulta = new javax.swing.JButton();
+        btnActualizarConsulta = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -181,7 +194,9 @@ public class Aplicacion extends javax.swing.JFrame {
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1210, 50));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_Paciente.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         lbl1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl1.setText("DNI");
@@ -222,17 +237,18 @@ public class Aplicacion extends javax.swing.JFrame {
         txtDireccion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtDireccion.setMargin(new java.awt.Insets(2, 10, 2, 10));
 
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarPaciente.setBackground(new java.awt.Color(153, 255, 204));
+        btnGuardarPaciente.setText("Guardar");
+        btnGuardarPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                btnGuardarPacienteActionPerformed(evt);
             }
         });
 
-        btnActualizar.setText("Actualizar");
-        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizarPaciente.setText("Actualizar");
+        btnActualizarPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarActionPerformed(evt);
+                btnActualizarPacienteActionPerformed(evt);
             }
         });
 
@@ -265,8 +281,8 @@ public class Aplicacion extends javax.swing.JFrame {
                                 .addComponent(lbl4)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnGuardarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnActualizarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -320,9 +336,9 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGuardarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnActualizarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -347,28 +363,30 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaPacientes);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel_PacienteLayout = new javax.swing.GroupLayout(jPanel_Paciente);
+        jPanel_Paciente.setLayout(jPanel_PacienteLayout);
+        jPanel_PacienteLayout.setHorizontalGroup(
+            jPanel_PacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_PacienteLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel_PacienteLayout.setVerticalGroup(
+            jPanel_PacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 545, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel_PacienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PanelTab.addTab("tab1", jPanel1);
+        PanelTab.addTab("tab1", jPanel_Paciente);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_Consultas.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
         lbl7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl7.setText("Diagnostico");
@@ -379,14 +397,15 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero2.setText("Paciente:");
 
-        btnGuardar1.setText("Guardar");
-        btnGuardar1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarConsulta.setBackground(new java.awt.Color(153, 255, 204));
+        btnGuardarConsulta.setText("Guardar");
+        btnGuardarConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardar1ActionPerformed(evt);
+                btnGuardarConsultaActionPerformed(evt);
             }
         });
 
-        btnBuscar.setText("Buscar");
+        btnActualizarConsulta.setText("Actualizar");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -408,15 +427,15 @@ public class Aplicacion extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Genero2)
-                                    .addComponent(jcbxGenero1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jcbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbl7, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnActualizarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                            .addComponent(btnGuardarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(34, 34, 34))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(lbl8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -430,13 +449,13 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGuardarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnActualizarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(Genero2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcbxGenero1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jcbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -445,7 +464,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addComponent(lbl8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -461,26 +480,28 @@ public class Aplicacion extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout jPanel_ConsultasLayout = new javax.swing.GroupLayout(jPanel_Consultas);
+        jPanel_Consultas.setLayout(jPanel_ConsultasLayout);
+        jPanel_ConsultasLayout.setHorizontalGroup(
+            jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_ConsultasLayout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(55, Short.MAX_VALUE))
+        jPanel_ConsultasLayout.setVerticalGroup(
+            jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_ConsultasLayout.createSequentialGroup()
+                .addGroup(jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel_ConsultasLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PanelTab.addTab("tab2", jPanel2);
+        PanelTab.addTab("tab2", jPanel_Consultas);
 
         getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 64, 1200, 580));
 
@@ -537,7 +558,7 @@ public class Aplicacion extends javax.swing.JFrame {
         lblCambio.setText("Consultas");
     }//GEN-LAST:event_btnConsultasActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void btnGuardarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPacienteActionPerformed
         // Obtener los datos de los inputs
         String dni = txtDNI.getText();
         String nombre = txtNombre.getText();
@@ -563,9 +584,9 @@ public class Aplicacion extends javax.swing.JFrame {
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage());
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_btnGuardarPacienteActionPerformed
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+    private void btnActualizarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarPacienteActionPerformed
         // Obtener los datos de los inputs
         String dni = txtDNI.getText();
         String nombre = txtNombre.getText();
@@ -603,7 +624,7 @@ public class Aplicacion extends javax.swing.JFrame {
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
         }
-    }//GEN-LAST:event_btnActualizarActionPerformed
+    }//GEN-LAST:event_btnActualizarPacienteActionPerformed
 
     // Método para limpiar los inputs de paciente
     private void limpiarInputsPaciente() {
@@ -617,9 +638,9 @@ public class Aplicacion extends javax.swing.JFrame {
         txtTelefono.setText("");
     }
 
-    private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
+    private void btnGuardarConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarConsultaActionPerformed
 
-    }//GEN-LAST:event_btnGuardar1ActionPerformed
+    }//GEN-LAST:event_btnGuardarConsultaActionPerformed
 
     /**
      * Método para cerrar la conexión de manera segura
@@ -636,23 +657,23 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel Genero2;
     private javax.swing.JMenuItem MI_CerrarSesion;
     private javax.swing.JTabbedPane PanelTab;
-    private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnActualizarConsulta;
+    private javax.swing.JButton btnActualizarPaciente;
     private javax.swing.JButton btnConsultas;
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnGuardar1;
+    private javax.swing.JButton btnGuardarConsulta;
+    private javax.swing.JButton btnGuardarPaciente;
     private javax.swing.JButton btnPacientes;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel_Consultas;
+    private javax.swing.JPanel jPanel_Paciente;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -661,7 +682,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JComboBox<Genero> jcbxGenero;
-    private javax.swing.JComboBox<String> jcbxGenero1;
+    private javax.swing.JComboBox<String> jcbxPaciente;
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lbl2;
     private javax.swing.JLabel lbl3;
