@@ -28,16 +28,38 @@ public class Aplicacion extends javax.swing.JFrame {
         // Ejemplo de eliminación lógica de género (por id)
         // arregloGenero.eliminarLogico(1); // Elimina lógicamente el género con id 1
         // arregloGenero.guardarEnBD(); // Guarda los cambios en la base de datos
-
         // Ejemplo de eliminación de paciente en memoria (por DNI)
         // listaPaciente.eliminarPorDni("12345678");
-
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 cerrarConexion();
                 System.exit(0);
+            }
+        });
+
+        // Listener para seleccionar fila de la tabla y cargar datos en los inputs
+        tablaPacientes.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                if (!evt.getValueIsAdjusting() && tablaPacientes.getSelectedRow() != -1) {
+                    int row = tablaPacientes.getSelectedRow();
+                    txtDNI.setText(tablaPacientes.getValueAt(row, 0).toString());
+                    txtNombre.setText(tablaPacientes.getValueAt(row, 1).toString());
+                    txtApellidoPaterno.setText(tablaPacientes.getValueAt(row, 2).toString());
+                    txtApellidoMaterno.setText(tablaPacientes.getValueAt(row, 3).toString());
+                    txtFechaNacimiento.setText(tablaPacientes.getValueAt(row, 4).toString());
+                    // Seleccionar género en el combo
+                    String genero = tablaPacientes.getValueAt(row, 5).toString();
+                    for (int i = 0; i < jcbxGenero.getItemCount(); i++) {
+                        if (jcbxGenero.getItemAt(i).toString().equals(genero)) {
+                            jcbxGenero.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                    txtDireccion.setText(tablaPacientes.getValueAt(row, 6).toString());
+                    txtTelefono.setText(tablaPacientes.getValueAt(row, 7).toString());
+                }
             }
         });
     }
@@ -56,7 +78,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private void cargarPacientesEnTabla() {
         listaPaciente.cargarDesdeBD();
         javax.swing.table.DefaultTableModel modeloTablaPaciente = new javax.swing.table.DefaultTableModel(
-            new Object[]{"DNI", "Nombre", "Apellido P.", "Apellido M.", "Fecha N.", "Género", "Dirección", "Teléfono", "Fecha E.", "Fecha S."}, 0
+                new Object[]{"DNI", "Nombre", "Apellido P.", "Apellido M.", "Fecha N.", "Género", "Dirección", "Teléfono", "Fecha E.", "Fecha S."}, 0
         );
         estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
         while (actual != null) {
@@ -100,18 +122,18 @@ public class Aplicacion extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         lbl2 = new javax.swing.JLabel();
         lbl3 = new javax.swing.JLabel();
-        txtApellidos = new javax.swing.JTextField();
+        txtApellidoPaterno = new javax.swing.JTextField();
         Genero = new javax.swing.JLabel();
         jcbxGenero = new javax.swing.JComboBox<>();
-        txtNombre3 = new javax.swing.JTextField();
+        txtFechaNacimiento = new javax.swing.JTextField();
         lbl4 = new javax.swing.JLabel();
         lbl5 = new javax.swing.JLabel();
-        txtNombre4 = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         Genero1 = new javax.swing.JLabel();
-        txtNombre5 = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
-        txtApellidos1 = new javax.swing.JTextField();
+        btnActualizar = new javax.swing.JButton();
+        txtApellidoMaterno = new javax.swing.JTextField();
         lbl6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPacientes = new javax.swing.JTable();
@@ -122,7 +144,7 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero2 = new javax.swing.JLabel();
         jcbxGenero1 = new javax.swing.JComboBox<>();
         btnGuardar1 = new javax.swing.JButton();
-        btnBuscar1 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -176,14 +198,14 @@ public class Aplicacion extends javax.swing.JFrame {
         lbl3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl3.setText("Apellido Paterno");
 
-        txtApellidos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtApellidos.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        txtApellidoPaterno.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtApellidoPaterno.setMargin(new java.awt.Insets(2, 10, 2, 10));
 
         Genero.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero.setText("Género");
 
-        txtNombre3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNombre3.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        txtFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtFechaNacimiento.setMargin(new java.awt.Insets(2, 10, 2, 10));
 
         lbl4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl4.setText("Direccion");
@@ -191,14 +213,14 @@ public class Aplicacion extends javax.swing.JFrame {
         lbl5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl5.setText("Teléfono");
 
-        txtNombre4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNombre4.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTelefono.setMargin(new java.awt.Insets(2, 10, 2, 10));
 
         Genero1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero1.setText("Fecha Nacimiento");
 
-        txtNombre5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtNombre5.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        txtDireccion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDireccion.setMargin(new java.awt.Insets(2, 10, 2, 10));
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -207,15 +229,15 @@ public class Aplicacion extends javax.swing.JFrame {
             }
         });
 
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
-        txtApellidos1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtApellidos1.setMargin(new java.awt.Insets(2, 10, 2, 10));
+        txtApellidoMaterno.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtApellidoMaterno.setMargin(new java.awt.Insets(2, 10, 2, 10));
 
         lbl6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl6.setText("Apellido Materno");
@@ -229,7 +251,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNombre5)
+                            .addComponent(txtDireccion)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lbl1)
@@ -237,26 +259,26 @@ public class Aplicacion extends javax.swing.JFrame {
                                     .addComponent(lbl3)
                                     .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
                                     .addComponent(txtDNI)
-                                    .addComponent(txtApellidos)
+                                    .addComponent(txtApellidoPaterno)
                                     .addComponent(lbl5)
-                                    .addComponent(txtNombre4))
+                                    .addComponent(txtTelefono))
                                 .addComponent(lbl4)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jcbxGenero, javax.swing.GroupLayout.Alignment.LEADING, 0, 186, Short.MAX_VALUE)
                             .addComponent(lbl6, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtApellidos1, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Genero1)
                             .addComponent(Genero)
-                            .addComponent(txtNombre3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -275,11 +297,11 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtApellidoPaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtApellidos1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Genero)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -287,20 +309,20 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Genero1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombre3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombre5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNombre4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -364,12 +386,7 @@ public class Aplicacion extends javax.swing.JFrame {
             }
         });
 
-        btnBuscar1.setText("Buscar");
-        btnBuscar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscar1ActionPerformed(evt);
-            }
-        });
+        btnBuscar.setText("Buscar");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -398,7 +415,7 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(lbl8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -415,7 +432,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(btnGuardar1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(Genero2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -521,20 +538,88 @@ public class Aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultasActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        // Obtener los datos de los inputs
+        String dni = txtDNI.getText();
+        String nombre = txtNombre.getText();
+        String apellidoPaterno = txtApellidoPaterno.getText();
+        String apellidoMaterno = txtApellidoMaterno.getText();
+        String fechaNacimientoStr = txtFechaNacimiento.getText();
+        String genero = jcbxGenero.getSelectedItem() != null ? jcbxGenero.getSelectedItem().toString() : "";
+        String direccion = txtDireccion.getText();
+        String telefono = txtTelefono.getText();
+        
+        try {
+            java.util.Date fechaNacimiento = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+            java.util.Date fechaEntrada = new java.util.Date(); // Fecha actual como entrada
+            java.util.Date fechaSalida = new java.util.Date(); // Por defecto igual a entrada
+            clases.Paciente paciente = new clases.Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
+            
+            listaPaciente.guardarEnBD(paciente);
+            
+            cargarPacientesEnTabla();
+            limpiarInputsPaciente();
+            
+            tablaPacientes.clearSelection();
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // Obtener los datos de los inputs
+        String dni = txtDNI.getText();
+        String nombre = txtNombre.getText();
+        String apellidoPaterno = txtApellidoPaterno.getText();
+        String apellidoMaterno = txtApellidoMaterno.getText();
+        String fechaNacimientoStr = txtFechaNacimiento.getText();
+        String genero = jcbxGenero.getSelectedItem().toString();
+        String direccion = txtDireccion.getText();
+        String telefono = txtTelefono.getText();
+        
+        try {
+            java.util.Date fechaNacimiento = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+            // Buscar el paciente en la lista
+            estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+            while (actual != null) {
+                if (actual.paciente.getDni().equals(dni)) {
+                    actual.paciente.setNombre(nombre);
+                    actual.paciente.setApellidoPaterno(apellidoPaterno);
+                    actual.paciente.setApellidoMaterno(apellidoMaterno);
+                    actual.paciente.setFechaNacimiento(fechaNacimiento);
+                    actual.paciente.setGenero(genero);
+                    actual.paciente.setDireccion(direccion);
+                    actual.paciente.setTelefono(telefono);
+                    // Actualizar en la base de datos
+                    listaPaciente.actualizarEnBD(actual.paciente);
+                    break;
+                }
+                actual = actual.siguiente;
+            }
+            // Refrescar la tabla
+            cargarPacientesEnTabla();
+            // Limpiar inputs y quitar selección
+            limpiarInputsPaciente();
+            tablaPacientes.clearSelection();
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    // Método para limpiar los inputs de paciente
+    private void limpiarInputsPaciente() {
+        txtDNI.setText("");
+        txtNombre.setText("");
+        txtApellidoPaterno.setText("");
+        txtApellidoMaterno.setText("");
+        txtFechaNacimiento.setText("");
+        jcbxGenero.setSelectedIndex(-1);
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+    }
 
     private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardar1ActionPerformed
 
-    private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscar1ActionPerformed
+    }//GEN-LAST:event_btnGuardar1ActionPerformed
 
     /**
      * Método para cerrar la conexión de manera segura
@@ -551,8 +636,8 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel Genero2;
     private javax.swing.JMenuItem MI_CerrarSesion;
     private javax.swing.JTabbedPane PanelTab;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnBuscar1;
     private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnGuardar1;
@@ -587,12 +672,12 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lbl8;
     private javax.swing.JLabel lblCambio;
     private javax.swing.JTable tablaPacientes;
-    private javax.swing.JTextField txtApellidos;
-    private javax.swing.JTextField txtApellidos1;
+    private javax.swing.JTextField txtApellidoMaterno;
+    private javax.swing.JTextField txtApellidoPaterno;
     private javax.swing.JTextField txtDNI;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtFechaNacimiento;
     private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtNombre3;
-    private javax.swing.JTextField txtNombre4;
-    private javax.swing.JTextField txtNombre5;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

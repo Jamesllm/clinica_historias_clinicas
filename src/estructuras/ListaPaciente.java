@@ -4,6 +4,8 @@ import clases.Paciente;
 import java.sql.*;
 import java.util.Date;
 import conexion.Conexion;
+import clases.Genero;
+import estructuras.ArregloGenero;
 
 public class ListaPaciente {
     public static class NodoPaciente {
@@ -16,6 +18,7 @@ public class ListaPaciente {
     }
 
     private NodoPaciente cabeza;
+    private ArregloGenero arregloGenero = new ArregloGenero(); // Para buscar idGenero
 
     public ListaPaciente() {
         cabeza = null;
@@ -69,12 +72,14 @@ public class ListaPaciente {
     // Cargar pacientes desde la base de datos
     public void cargarDesdeBD() {
         try {
+            cabeza = null; // Limpiar la lista antes de cargar
+            arregloGenero.cargarDesdeBD();
             Connection conn = Conexion.getInstance().getConexion();
             Statement stmt = conn.createStatement();
             String sql = "SELECT p.dni, p.nombre, p.apellidoPaterno, p.apellidoMaterno, p.fechaNacimiento, genero.nombre as genero, p.direccion, p.telefono, pa.fechaEntrada, pa.fechaSalida\n" +
                 "FROM personas.persona p \n" +
                 "INNER JOIN personas.paciente pa ON p.idPersona = pa.idPersona\n" +
-                "INNER JOIN personas.genero genero ON p.idgenero = genero.idgenero";
+                "INNER JOIN personas.genero genero ON p.idGenero = genero.idGenero";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 String dni = rs.getString("dni");
@@ -100,18 +105,22 @@ public class ListaPaciente {
     // Guardar un paciente en la base de datos (ejemplo simple)
     public void guardarEnBD(Paciente paciente) {
         try {
+            arregloGenero.cargarDesdeBD();
             Connection conn = Conexion.getInstance().getConexion();
+            // Obtener idGenero a partir del nombre
+            Genero generoObj = arregloGenero.buscarPorNombre(paciente.getGenero());
+            int idGenero = (generoObj != null) ? generoObj.getIdGenero() : 1; // Por defecto 1 si no se encuentra
             // Insertar en persona
             PreparedStatement psPersona = conn.prepareStatement(
-                "INSERT INTO personas.persona (dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING idPersona");
+                "INSERT INTO personas.persona (dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, direccion, telefono, idGenero) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING idPersona");
             psPersona.setString(1, paciente.getDni());
             psPersona.setString(2, paciente.getNombre());
             psPersona.setString(3, paciente.getApellidoPaterno());
             psPersona.setString(4, paciente.getApellidoMaterno());
             psPersona.setDate(5, new java.sql.Date(paciente.getFechaNacimiento().getTime()));
-            psPersona.setString(6, paciente.getGenero());
-            psPersona.setString(7, paciente.getDireccion());
-            psPersona.setString(8, paciente.getTelefono());
+            psPersona.setString(6, paciente.getDireccion());
+            psPersona.setString(7, paciente.getTelefono());
+            psPersona.setInt(8, idGenero);
             ResultSet rs = psPersona.executeQuery();
             int idPersona = -1;
             if (rs.next()) {
@@ -127,6 +136,33 @@ public class ListaPaciente {
             psPaciente.setTimestamp(3, new java.sql.Timestamp(paciente.getFechaSalida().getTime()));
             psPaciente.executeUpdate();
             psPaciente.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Actualizar un paciente en la base de datos por DNI
+    public void actualizarEnBD(Paciente paciente) {
+        try {
+            arregloGenero.cargarDesdeBD();
+            Connection conn = Conexion.getInstance().getConexion();
+            // Obtener idGenero a partir del nombre
+            Genero generoObj = arregloGenero.buscarPorNombre(paciente.getGenero());
+            int idGenero = (generoObj != null) ? generoObj.getIdGenero() : 1;
+            // Actualizar en persona
+            PreparedStatement psPersona = conn.prepareStatement(
+                "UPDATE personas.persona SET nombre=?, apellidoPaterno=?, apellidoMaterno=?, fechaNacimiento=?, direccion=?, telefono=?, idGenero=? WHERE dni=?");
+            psPersona.setString(1, paciente.getNombre());
+            psPersona.setString(2, paciente.getApellidoPaterno());
+            psPersona.setString(3, paciente.getApellidoMaterno());
+            psPersona.setDate(4, new java.sql.Date(paciente.getFechaNacimiento().getTime()));
+            psPersona.setString(5, paciente.getDireccion());
+            psPersona.setString(6, paciente.getTelefono());
+            psPersona.setInt(7, idGenero);
+            psPersona.setString(8, paciente.getDni());
+            psPersona.executeUpdate();
+            psPersona.close();
+            // No se actualizan fechas de entrada/salida aquí, pero se puede agregar si es necesario
         } catch (SQLException e) {
             e.printStackTrace();
         }

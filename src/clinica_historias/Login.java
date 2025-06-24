@@ -50,6 +50,7 @@ public class Login extends javax.swing.JFrame {
         lblImagenLogin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Historias Clinicas");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
