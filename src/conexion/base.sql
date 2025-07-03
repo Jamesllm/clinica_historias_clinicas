@@ -33,7 +33,8 @@ CREATE TABLE personas.usuario (
   idUsuario SERIAL PRIMARY KEY,
   idPersona INT REFERENCES personas.persona(idPersona),
   turno VARCHAR(20),
-  idEspecialidad INT REFERENCES clinica.especialidad(idEspecialidad)
+  idEspecialidad INT REFERENCES clinica.especialidad(idEspecialidad),
+  contrasena VARCHAR(100)
 );
 
 CREATE TABLE personas.paciente (
@@ -117,3 +118,7 @@ VALUES (1, '2024-06-01', 'Efectivo');
 
 INSERT INTO pagos.comprobantePago(idConsulta, fechaEmision, formaPago)
 VALUES (2, '2024-06-03', 'Tarjeta');
+
+-- Ejemplo de actualización de contraseñas para usuarios existentes
+UPDATE personas.usuario SET contrasena = '1234' WHERE idUsuario = 1;
+UPDATE personas.usuario SET contrasena = '5678' WHERE idUsuario = 2;

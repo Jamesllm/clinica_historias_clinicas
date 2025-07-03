@@ -18,6 +18,11 @@ public class Aplicacion extends javax.swing.JFrame {
     private clases.Usuario usuarioActual; // Debes asignar este valor al iniciar sesión
     private estructuras.ListaConsultaMedica listaConsultaMedica;
 
+    public Aplicacion(Conexion conexionDB, clases.Usuario usuarioActual) {
+        this(conexionDB);
+        this.usuarioActual = usuarioActual;
+    }
+
     public Aplicacion(Conexion conexionDB) {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -67,6 +72,29 @@ public class Aplicacion extends javax.swing.JFrame {
                     }
                     txtDireccion.setText(tablaPacientes.getValueAt(row, 6).toString());
                     txtTelefono.setText(tablaPacientes.getValueAt(row, 7).toString());
+                }
+            }
+        });
+
+        // Listener para seleccionar fila de la tabla de consultas y cargar datos en los inputs de consulta
+        tablaConsultas.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                if (!evt.getValueIsAdjusting() && tablaConsultas.getSelectedRow() != -1) {
+                    int row = tablaConsultas.getSelectedRow();
+                    // Diagnóstico y tratamiento
+                    jta_diagnostico.setText(tablaConsultas.getValueAt(row, 3).toString());
+                    jta_tratamiento.setText(tablaConsultas.getValueAt(row, 4).toString());
+                    // Paciente (combo) - buscar por DNI
+                    String pacienteCombo = tablaConsultas.getValueAt(row, 1).toString();
+                    String dniTabla = pacienteCombo.split(" - ")[0].trim();
+                    for (int i = 0; i < jcbxPaciente.getItemCount(); i++) {
+                        String item = jcbxPaciente.getItemAt(i);
+                        String dniCombo = item.split(" - ")[0].trim();
+                        if (dniCombo.equals(dniTabla)) {
+                            jcbxPaciente.setSelectedIndex(i);
+                            break;
+                        }
+                    }
                 }
             }
         });
