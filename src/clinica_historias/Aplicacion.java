@@ -6,12 +6,17 @@ import java.awt.event.WindowEvent;
 import clases.Genero;
 import estructuras.ArregloGenero;
 import estructuras.ListaPaciente;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class Aplicacion extends javax.swing.JFrame {
 
     private Conexion conexionDB;
     private ArregloGenero arregloGenero;
     private ListaPaciente listaPaciente;
+    private clases.Usuario usuarioActual; // Debes asignar este valor al iniciar sesión
+    private estructuras.ListaConsultaMedica listaConsultaMedica;
 
     public Aplicacion(Conexion conexionDB) {
         initComponents();
@@ -21,9 +26,11 @@ public class Aplicacion extends javax.swing.JFrame {
         // Inicializar estructuras de datos
         arregloGenero = new ArregloGenero();
         listaPaciente = new ListaPaciente();
+        listaConsultaMedica = new estructuras.ListaConsultaMedica();
 
         cargarGenerosEnCombo();
         cargarPacientesEnTabla();
+        cargarConsultasEnTabla();
 
         // Ejemplo de eliminación lógica de género (por id)
         // arregloGenero.eliminarLogico(1); // Elimina lógicamente el género con id 1
@@ -114,6 +121,29 @@ public class Aplicacion extends javax.swing.JFrame {
         cargarPacientesEnCombo();
     }
 
+    private void cargarConsultasEnTabla() {
+        listaConsultaMedica.cargarDesdeBD();
+        javax.swing.table.DefaultTableModel modeloTablaConsulta = new javax.swing.table.DefaultTableModel(
+            new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha"}, 0
+        );
+        estructuras.ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
+        while (actual != null) {
+            clases.ConsultaMedica c = actual.consulta;
+            String nombrePaciente = c.getPaciente().getDni() + " - " + c.getPaciente().getNombre() + " " + c.getPaciente().getApellidoPaterno();
+            String nombreUsuario = c.getUsuario().getNombre() + " " + c.getUsuario().getApellidoPaterno();
+            modeloTablaConsulta.addRow(new Object[]{
+                c.getIdConsultaMedica(),
+                nombrePaciente,
+                nombreUsuario,
+                c.getDiagnostico(),
+                c.getTratamiento(),
+                c.getFechaRegistro()
+            });
+            actual = actual.siguiente;
+        }
+        tablaConsultas.setModel(modeloTablaConsulta);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,11 +190,11 @@ public class Aplicacion extends javax.swing.JFrame {
         btnGuardarConsulta = new javax.swing.JButton();
         btnActualizarConsulta = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jta_tratamiento = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        jta_diagnostico = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaConsultas = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         btnPacientes = new javax.swing.JButton();
         btnConsultas = new javax.swing.JButton();
@@ -408,13 +438,13 @@ public class Aplicacion extends javax.swing.JFrame {
 
         btnActualizarConsulta.setText("Actualizar");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jta_tratamiento.setColumns(20);
+        jta_tratamiento.setRows(5);
+        jScrollPane3.setViewportView(jta_tratamiento);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        jta_diagnostico.setColumns(20);
+        jta_diagnostico.setRows(5);
+        jScrollPane4.setViewportView(jta_diagnostico);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -468,7 +498,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap(127, Short.MAX_VALUE))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaConsultas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -479,7 +509,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 "ID", "Paciente", "Fecha"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tablaConsultas);
 
         javax.swing.GroupLayout jPanel_ConsultasLayout = new javax.swing.GroupLayout(jPanel_Consultas);
         jPanel_Consultas.setLayout(jPanel_ConsultasLayout);
@@ -640,7 +670,52 @@ public class Aplicacion extends javax.swing.JFrame {
     }
 
     private void btnGuardarConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarConsultaActionPerformed
+        String diagnostico = jta_diagnostico.getText().trim();
+        String tratamiento = jta_tratamiento.getText().trim();
+        String pacienteSeleccionado = (String) jcbxPaciente.getSelectedItem();
+        java.util.Date fechaRegistro = new java.util.Date();
 
+        if (diagnostico.isEmpty() || tratamiento.isEmpty() || pacienteSeleccionado == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe completar todos los campos.");
+            return;
+        }
+
+        String dni = pacienteSeleccionado.split(" - ")[0];
+        clases.Paciente paciente = null;
+        estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+        while (actual != null) {
+            if (actual.paciente.getDni().equals(dni)) {
+                paciente = actual.paciente;
+                break;
+            }
+            actual = actual.siguiente;
+        }
+        if (paciente == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Paciente no encontrado.");
+            return;
+        }
+
+        clases.Usuario usuario = usuarioActual;
+        if (usuario == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay usuario logueado.");
+            return;
+        }
+
+        clases.ConsultaMedica consulta = new clases.ConsultaMedica(
+            0, diagnostico, tratamiento, fechaRegistro, paciente, usuario, null
+        );
+
+        try {
+            int idConsulta = listaConsultaMedica.guardarEnBD(consulta);
+            if (idConsulta != -1) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Consulta médica guardada correctamente.");
+                cargarConsultasEnTabla();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar la consulta médica.");
+            }
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar la consulta: " + ex.getMessage());
+        }
     }//GEN-LAST:event_btnGuardarConsultaActionPerformed
 
     /**
@@ -679,11 +754,10 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JComboBox<Genero> jcbxGenero;
     private javax.swing.JComboBox<String> jcbxPaciente;
+    private javax.swing.JTextArea jta_diagnostico;
+    private javax.swing.JTextArea jta_tratamiento;
     private javax.swing.JLabel lbl1;
     private javax.swing.JLabel lbl2;
     private javax.swing.JLabel lbl3;
@@ -693,6 +767,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lbl7;
     private javax.swing.JLabel lbl8;
     private javax.swing.JLabel lblCambio;
+    private javax.swing.JTable tablaConsultas;
     private javax.swing.JTable tablaPacientes;
     private javax.swing.JTextField txtApellidoMaterno;
     private javax.swing.JTextField txtApellidoPaterno;
