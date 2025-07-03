@@ -161,41 +161,14 @@ public class Login extends javax.swing.JFrame {
         String dni = txtCorreo.getText().trim();
         String contrasena = new String(txtContraseña.getPassword());
         try {
-            Connection conn = conexionDB.getConexion();
-            String sql = "SELECT u.idUsuario, u.turno, u.idEspecialidad, u.contrasena, p.dni, p.nombre, p.apellidoPaterno, p.apellidoMaterno, p.fechaNacimiento, p.direccion, p.telefono, g.nombre as genero, e.nombre as especialidad " +
-                         "FROM personas.usuario u " +
-                         "INNER JOIN personas.persona p ON u.idPersona = p.idPersona " +
-                         "INNER JOIN personas.genero g ON p.idGenero = g.idGenero " +
-                         "INNER JOIN clinica.especialidad e ON u.idEspecialidad = e.idEspecialidad " +
-                         "WHERE p.dni = ? AND u.contrasena = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, dni);
-            ps.setString(2, contrasena);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                // Construir el objeto Usuario
-                Especialidad especialidad = new Especialidad(rs.getInt("idEspecialidad"), rs.getString("especialidad"));
-                Usuario usuario = new Usuario(
-                    rs.getInt("idUsuario"),
-                    rs.getString("turno"),
-                    especialidad,
-                    rs.getString("dni"),
-                    rs.getString("nombre"),
-                    rs.getString("apellidoPaterno"),
-                    rs.getString("apellidoMaterno"),
-                    rs.getDate("fechaNacimiento"),
-                    rs.getString("genero"),
-                    rs.getString("direccion"),
-                    rs.getString("telefono")
-                );
+            Usuario usuario = LoginService.autenticarUsuario(conexionDB.getConexion(), dni, contrasena);
+            if (usuario != null) {
                 Aplicacion app = new Aplicacion(conexionDB, usuario);
                 app.setVisible(true);
                 this.dispose();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "DNI o contraseña incorrectos.");
             }
-            rs.close();
-            ps.close();
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage());
         }
