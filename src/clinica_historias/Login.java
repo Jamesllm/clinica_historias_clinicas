@@ -72,7 +72,7 @@ public class Login extends javax.swing.JFrame {
         lblContraseña.setText("Contraseña:");
 
         lblCorreo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblCorreo.setText("Correo:");
+        lblCorreo.setText("DNI:");
 
         txtCorreo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtCorreo.setForeground(new java.awt.Color(27, 55, 79));
