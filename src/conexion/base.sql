@@ -41,7 +41,8 @@ CREATE TABLE personas.paciente (
   idPaciente SERIAL PRIMARY KEY,
   idPersona INT REFERENCES personas.persona(idPersona),
   fechaEntrada TIMESTAMP,
-  fechaSalida TIMESTAMP
+  fechaSalida TIMESTAMP,
+  atendido BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE clinica.medicamento (

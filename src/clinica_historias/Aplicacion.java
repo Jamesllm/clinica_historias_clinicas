@@ -6,16 +6,20 @@ import java.awt.event.WindowEvent;
 import clases.Genero;
 import estructuras.ArregloGenero;
 import estructuras.ListaPaciente;
+import estructuras.ColaDinamicaPaciente;
+import estructuras.ListaConsultaMedica;
+import estructuras.PilaDinamicaComprobante;
+import clases.Usuario;
 
 public class Aplicacion extends javax.swing.JFrame {
 
     private Conexion conexionDB;
     private ArregloGenero arregloGenero;
     private ListaPaciente listaPaciente;
-    private clases.Usuario usuarioActual; // Debes asignar este valor al iniciar sesión
-    private estructuras.ListaConsultaMedica listaConsultaMedica;
-    private estructuras.ColaDinamicaPaciente colaPacientes;
-    private estructuras.PilaDinamicaComprobante pilaComprobantes;
+    private Usuario usuarioActual;
+    private ListaConsultaMedica listaConsultaMedica;
+    private ColaDinamicaPaciente colaPacientes;
+    private PilaDinamicaComprobante pilaComprobantes;
 
     public Aplicacion(Conexion conexionDB, clases.Usuario usuarioActual) {
         this(conexionDB);
@@ -104,7 +108,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
         // Modelo de la tabla
         tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
         ));
 
         // Refresca la vista
@@ -866,7 +870,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void actualizarTablaColaPacientes() {
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
-            new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
         );
         estructuras.ColaDinamicaPaciente.Nodo actual = colaPacientes.frente;
         while (actual != null) {
@@ -882,7 +886,7 @@ public class Aplicacion extends javax.swing.JFrame {
         if (colaPacientes.frente != null) {
             clases.Paciente actual = colaPacientes.frente.paciente;
             lbl_atender_ahora.setText(actual.getDni() + " - " + actual.getNombre() + " " + actual.getApellidoPaterno());
-            
+
             // Siguiente paciente
             if (colaPacientes.frente.siguiente != null) {
                 clases.Paciente siguiente = colaPacientes.frente.siguiente.paciente;
@@ -898,7 +902,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void actualizarTablaPilaComprobantes() {
         javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
-            new Object[]{"ID", "Fecha Emisión", "Forma de Pago"}, 0
+                new Object[]{"ID", "Fecha Emisión", "Forma de Pago"}, 0
         );
         estructuras.PilaDinamicaComprobante.Nodo actual = pilaComprobantes.tope;
         while (actual != null) {
