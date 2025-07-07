@@ -21,7 +21,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private ColaDinamicaPaciente colaPacientes;
     private PilaDinamicaComprobante pilaComprobantes;
 
-    public Aplicacion(Conexion conexionDB, clases.Usuario usuarioActual) {
+    public Aplicacion(Conexion conexionDB, Usuario usuarioActual) {
         this(conexionDB);
         this.usuarioActual = usuarioActual;
     }
@@ -34,9 +34,9 @@ public class Aplicacion extends javax.swing.JFrame {
         // Inicializar estructuras de datos
         arregloGenero = new ArregloGenero();
         listaPaciente = new ListaPaciente();
-        listaConsultaMedica = new estructuras.ListaConsultaMedica();
-        colaPacientes = new estructuras.ColaDinamicaPaciente();
-        pilaComprobantes = new estructuras.PilaDinamicaComprobante();
+        listaConsultaMedica = new ListaConsultaMedica();
+        colaPacientes = new ColaDinamicaPaciente();
+        pilaComprobantes = new PilaDinamicaComprobante();
         colaPacientes.cargarDesdeBD();
         pilaComprobantes.cargarDesdeBD();
 
@@ -295,6 +295,9 @@ public class Aplicacion extends javax.swing.JFrame {
 
         jPanel_Atender.setBackground(new java.awt.Color(255, 255, 255));
 
+        btnAtenderPaciente.setBackground(new java.awt.Color(27, 55, 79));
+        btnAtenderPaciente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAtenderPaciente.setForeground(new java.awt.Color(255, 255, 255));
         btnAtenderPaciente.setText("Atender paciente");
 
         tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -885,12 +888,12 @@ public class Aplicacion extends javax.swing.JFrame {
         // Paciente actual (frente de la cola)
         if (colaPacientes.frente != null) {
             clases.Paciente actual = colaPacientes.frente.paciente;
-            lbl_atender_ahora.setText(actual.getDni() + " - " + actual.getNombre() + " " + actual.getApellidoPaterno());
+            lbl_atender_ahora.setText(actual.getNombre() + " " + actual.getApellidoPaterno() + " - " + actual.getDni());
 
             // Siguiente paciente
             if (colaPacientes.frente.siguiente != null) {
                 clases.Paciente siguiente = colaPacientes.frente.siguiente.paciente;
-                lbl_atender_siguiente.setText(siguiente.getDni() + " - " + siguiente.getNombre() + " " + siguiente.getApellidoPaterno());
+                lbl_atender_siguiente.setText(actual.getNombre() + " " + actual.getApellidoPaterno() + " - " + actual.getDni());
             } else {
                 lbl_atender_siguiente.setText("No hay siguiente paciente");
             }
