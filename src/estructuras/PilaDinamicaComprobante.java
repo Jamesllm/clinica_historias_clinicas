@@ -15,7 +15,7 @@ public class PilaDinamicaComprobante {
         }
     }
 
-    private Nodo tope;
+    public Nodo tope;
 
     public PilaDinamicaComprobante() {
         tope = null;

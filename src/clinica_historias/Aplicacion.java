@@ -6,9 +6,6 @@ import java.awt.event.WindowEvent;
 import clases.Genero;
 import estructuras.ArregloGenero;
 import estructuras.ListaPaciente;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class Aplicacion extends javax.swing.JFrame {
 
@@ -17,6 +14,8 @@ public class Aplicacion extends javax.swing.JFrame {
     private ListaPaciente listaPaciente;
     private clases.Usuario usuarioActual; // Debes asignar este valor al iniciar sesión
     private estructuras.ListaConsultaMedica listaConsultaMedica;
+    private estructuras.ColaDinamicaPaciente colaPacientes;
+    private estructuras.PilaDinamicaComprobante pilaComprobantes;
 
     public Aplicacion(Conexion conexionDB, clases.Usuario usuarioActual) {
         this(conexionDB);
@@ -32,6 +31,10 @@ public class Aplicacion extends javax.swing.JFrame {
         arregloGenero = new ArregloGenero();
         listaPaciente = new ListaPaciente();
         listaConsultaMedica = new estructuras.ListaConsultaMedica();
+        colaPacientes = new estructuras.ColaDinamicaPaciente();
+        pilaComprobantes = new estructuras.PilaDinamicaComprobante();
+        colaPacientes.cargarDesdeBD();
+        pilaComprobantes.cargarDesdeBD();
 
         cargarGenerosEnCombo();
         cargarPacientesEnTabla();
@@ -95,6 +98,30 @@ public class Aplicacion extends javax.swing.JFrame {
                             break;
                         }
                     }
+                }
+            }
+        });
+
+        // Modelo de la tabla
+        tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
+        ));
+
+        // Refresca la vista
+        jPanel_Atender.revalidate();
+        jPanel_Atender.repaint();
+        actualizarTablaColaPacientes();
+        actualizarLabelsAtencion();
+
+        btnAtenderPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (!colaPacientes.isEmpty()) {
+                    clases.Paciente paciente = colaPacientes.dequeue();
+                    actualizarTablaColaPacientes();
+                    actualizarLabelsAtencion();
+                    javax.swing.JOptionPane.showMessageDialog(null, "Paciente atendido: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(null, "No hay pacientes en la cola.");
                 }
             }
         });
@@ -188,7 +215,13 @@ public class Aplicacion extends javax.swing.JFrame {
         lblCambio = new javax.swing.JLabel();
         PanelTab = new javax.swing.JTabbedPane();
         jPanel_Atender = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        btnAtenderPaciente = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tablaColaPacientes = new javax.swing.JTable();
+        lbl_atender_ahora = new javax.swing.JLabel();
+        lbl_atender_ahora1 = new javax.swing.JLabel();
+        lbl_atender_ahora2 = new javax.swing.JLabel();
+        lbl_atender_siguiente = new javax.swing.JLabel();
         jPanel_Paciente = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lbl1 = new javax.swing.JLabel();
@@ -258,23 +291,69 @@ public class Aplicacion extends javax.swing.JFrame {
 
         jPanel_Atender.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Atendiendo page");
+        btnAtenderPaciente.setText("Atender paciente");
+
+        tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(tablaColaPacientes);
+
+        lbl_atender_ahora.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbl_atender_ahora.setText("jLabel1");
+
+        lbl_atender_ahora1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_atender_ahora1.setText("Siguiente");
+
+        lbl_atender_ahora2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_atender_ahora2.setText("Atender ahora");
+
+        lbl_atender_siguiente.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbl_atender_siguiente.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel_AtenderLayout = new javax.swing.GroupLayout(jPanel_Atender);
         jPanel_Atender.setLayout(jPanel_AtenderLayout);
         jPanel_AtenderLayout.setHorizontalGroup(
             jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_AtenderLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
-                .addContainerGap(1090, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_AtenderLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_atender_ahora)
+                    .addComponent(lbl_atender_ahora1)
+                    .addComponent(lbl_atender_siguiente)
+                    .addComponent(lbl_atender_ahora2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 383, Short.MAX_VALUE)
+                .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                    .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
         jPanel_AtenderLayout.setVerticalGroup(
             jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_AtenderLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel1)
-                .addContainerGap(494, Short.MAX_VALUE))
+                .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_AtenderLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel_AtenderLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(lbl_atender_ahora2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_atender_ahora)
+                        .addGap(40, 40, 40)
+                        .addComponent(lbl_atender_ahora1)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbl_atender_siguiente)))
+                .addGap(18, 18, 18)
+                .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         PanelTab.addTab("tab2", jPanel_Atender);
@@ -785,6 +864,51 @@ public class Aplicacion extends javax.swing.JFrame {
         lblCambio.setText("Atender");
     }//GEN-LAST:event_btnAtenderActionPerformed
 
+    private void actualizarTablaColaPacientes() {
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+            new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
+        );
+        estructuras.ColaDinamicaPaciente.Nodo actual = colaPacientes.frente;
+        while (actual != null) {
+            clases.Paciente p = actual.paciente;
+            modelo.addRow(new Object[]{p.getDni(), p.getNombre(), p.getApellidoPaterno(), p.getApellidoMaterno()});
+            actual = actual.siguiente;
+        }
+        tablaColaPacientes.setModel(modelo);
+    }
+
+    private void actualizarLabelsAtencion() {
+        // Paciente actual (frente de la cola)
+        if (colaPacientes.frente != null) {
+            clases.Paciente actual = colaPacientes.frente.paciente;
+            lbl_atender_ahora.setText(actual.getDni() + " - " + actual.getNombre() + " " + actual.getApellidoPaterno());
+            
+            // Siguiente paciente
+            if (colaPacientes.frente.siguiente != null) {
+                clases.Paciente siguiente = colaPacientes.frente.siguiente.paciente;
+                lbl_atender_siguiente.setText(siguiente.getDni() + " - " + siguiente.getNombre() + " " + siguiente.getApellidoPaterno());
+            } else {
+                lbl_atender_siguiente.setText("No hay siguiente paciente");
+            }
+        } else {
+            lbl_atender_ahora.setText("No hay pacientes en la cola");
+            lbl_atender_siguiente.setText("No hay siguiente paciente");
+        }
+    }
+
+    private void actualizarTablaPilaComprobantes() {
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+            new Object[]{"ID", "Fecha Emisión", "Forma de Pago"}, 0
+        );
+        estructuras.PilaDinamicaComprobante.Nodo actual = pilaComprobantes.tope;
+        while (actual != null) {
+            clases.ComprobantePago c = actual.comprobante;
+            modelo.addRow(new Object[]{c.getIdComprobantePago(), c.getFechaEmision(), c.getPago()});
+            actual = actual.siguiente;
+        }
+        //tablaPilaComprobantes.setModel(modelo);
+    }
+
     /**
      * Método para cerrar la conexión de manera segura
      */
@@ -803,11 +927,11 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizarConsulta;
     private javax.swing.JButton btnActualizarPaciente;
     private javax.swing.JButton btnAtender;
+    private javax.swing.JButton btnAtenderPaciente;
     private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
     private javax.swing.JButton btnPacientes;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -824,6 +948,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JComboBox<Genero> jcbxGenero;
     private javax.swing.JComboBox<String> jcbxPaciente;
     private javax.swing.JTextArea jta_diagnostico;
@@ -837,6 +962,11 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lbl7;
     private javax.swing.JLabel lbl8;
     private javax.swing.JLabel lblCambio;
+    private javax.swing.JLabel lbl_atender_ahora;
+    private javax.swing.JLabel lbl_atender_ahora1;
+    private javax.swing.JLabel lbl_atender_ahora2;
+    private javax.swing.JLabel lbl_atender_siguiente;
+    private javax.swing.JTable tablaColaPacientes;
     private javax.swing.JTable tablaConsultas;
     private javax.swing.JTable tablaPacientes;
     private javax.swing.JTextField txtApellidoMaterno;

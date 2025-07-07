@@ -15,7 +15,7 @@ public class ColaDinamicaPaciente {
         }
     }
 
-    private Nodo frente;
+    public Nodo frente;
     private Nodo finalCola;
 
     public ColaDinamicaPaciente() {

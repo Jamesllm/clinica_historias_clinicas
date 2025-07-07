@@ -8,9 +8,15 @@ public class Conexion {
     private static Conexion instancia;
     private Connection conexion;
     
+// Local
     private final String URL = "jdbc:postgresql://localhost:5432/historias_clinicas";
     private final String USUARIO = "postgres";
     private final String CLAVE = "Peru123...";
+
+// Publica    
+//    private final String URL = "jdbc:postgresql://dpg-d1m43nqdbo4c73ajmtog-a.oregon-postgres.render.com/historias_clinicas";
+//    private final String USUARIO = "historias_clinicas_user";
+//    private final String CLAVE = "lKPppy30QgWMOhTMRXHEjzKh7OFYjb0K";
 
     private Conexion() {
         try {
