@@ -152,7 +152,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private void cargarConsultasEnTabla() {
         listaConsultaMedica.cargarDesdeBD();
         javax.swing.table.DefaultTableModel modeloTablaConsulta = new javax.swing.table.DefaultTableModel(
-            new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha"}, 0
+                new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha"}, 0
         );
         estructuras.ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
         while (actual != null) {
@@ -187,6 +187,8 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         lblCambio = new javax.swing.JLabel();
         PanelTab = new javax.swing.JTabbedPane();
+        jPanel_Atender = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel_Paciente = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lbl1 = new javax.swing.JLabel();
@@ -224,6 +226,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaConsultas = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        btnAtender = new javax.swing.JButton();
         btnPacientes = new javax.swing.JButton();
         btnConsultas = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -252,6 +255,29 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel4.add(lblCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1210, 50));
+
+        jPanel_Atender.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setText("Atendiendo page");
+
+        javax.swing.GroupLayout jPanel_AtenderLayout = new javax.swing.GroupLayout(jPanel_Atender);
+        jPanel_Atender.setLayout(jPanel_AtenderLayout);
+        jPanel_AtenderLayout.setHorizontalGroup(
+            jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_AtenderLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addContainerGap(1090, Short.MAX_VALUE))
+        );
+        jPanel_AtenderLayout.setVerticalGroup(
+            jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_AtenderLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabel1)
+                .addContainerGap(494, Short.MAX_VALUE))
+        );
+
+        PanelTab.addTab("tab2", jPanel_Atender);
 
         jPanel_Paciente.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -566,6 +592,14 @@ public class Aplicacion extends javax.swing.JFrame {
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
+        btnAtender.setText("Atender");
+        btnAtender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtenderActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnAtender);
+
         btnPacientes.setText("Pacientes");
         btnPacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -582,7 +616,7 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 30));
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 320, 30));
 
         jMenu1.setText("Cuenta");
 
@@ -608,12 +642,12 @@ public class Aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_MI_CerrarSesionActionPerformed
 
     private void btnPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPacientesActionPerformed
-        PanelTab.setSelectedIndex(0);
+        PanelTab.setSelectedIndex(1);
         lblCambio.setText("Pacientes");
     }//GEN-LAST:event_btnPacientesActionPerformed
 
     private void btnConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultasActionPerformed
-        PanelTab.setSelectedIndex(1);
+        PanelTab.setSelectedIndex(2);
         lblCambio.setText("Consultas");
     }//GEN-LAST:event_btnConsultasActionPerformed
 
@@ -730,7 +764,7 @@ public class Aplicacion extends javax.swing.JFrame {
         }
 
         clases.ConsultaMedica consulta = new clases.ConsultaMedica(
-            0, diagnostico, tratamiento, fechaRegistro, paciente, usuario, null
+                0, diagnostico, tratamiento, fechaRegistro, paciente, usuario, null
         );
 
         try {
@@ -745,6 +779,11 @@ public class Aplicacion extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar la consulta: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnGuardarConsultaActionPerformed
+
+    private void btnAtenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderActionPerformed
+        PanelTab.setSelectedIndex(0);
+        lblCambio.setText("Atender");
+    }//GEN-LAST:event_btnAtenderActionPerformed
 
     /**
      * Método para cerrar la conexión de manera segura
@@ -763,10 +802,12 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JTabbedPane PanelTab;
     private javax.swing.JButton btnActualizarConsulta;
     private javax.swing.JButton btnActualizarPaciente;
+    private javax.swing.JButton btnAtender;
     private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
     private javax.swing.JButton btnPacientes;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -776,6 +817,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel_Atender;
     private javax.swing.JPanel jPanel_Consultas;
     private javax.swing.JPanel jPanel_Paciente;
     private javax.swing.JScrollPane jScrollPane1;

@@ -23,7 +23,7 @@ public class Login extends javax.swing.JFrame {
         utilidades.Utilidades.setImageLabel(lblImagenLogin, "src/imagenes/login.png");
         
         // default
-        txtCorreo.setText("admin");
+        txtCorreo.setText("12345678");
         txtContraseña.setText("1234");
         
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
