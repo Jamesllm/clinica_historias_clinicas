@@ -1,15 +1,28 @@
 package clinica_historias;
 
-import conexion.Conexion;
+// Clases java
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import javax.swing.table.DefaultTableModel;
+
+// Conexion a la base de datos
+import conexion.Conexion;
+
+// Clases
 import clases.Genero;
+import clases.Usuario;
+import clases.Paciente;
+import clases.ConsultaMedica;
+import clases.ComprobantePago;
+
+// Estructuras
 import estructuras.ArregloGenero;
 import estructuras.ListaPaciente;
 import estructuras.ColaDinamicaPaciente;
 import estructuras.ListaConsultaMedica;
 import estructuras.PilaDinamicaComprobante;
-import clases.Usuario;
 
 public class Aplicacion extends javax.swing.JFrame {
 
@@ -107,7 +120,7 @@ public class Aplicacion extends javax.swing.JFrame {
         });
 
         // Modelo de la tabla
-        tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
+        tablaColaPacientes.setModel(new DefaultTableModel(
                 new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
         ));
 
@@ -134,6 +147,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private void cargarGenerosEnCombo() {
         arregloGenero.cargarDesdeBD();
         jcbxGenero.removeAllItems();
+
         for (int i = 0; i < arregloGenero.getCount(); i++) {
             Genero genero = arregloGenero.getGeneros()[i];
             if (genero.isEstado()) {
@@ -145,7 +159,8 @@ public class Aplicacion extends javax.swing.JFrame {
     private void cargarPacientesEnCombo() {
         jcbxPaciente.removeAllItems();
         listaPaciente.cargarDesdeBD();
-        estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+        ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+
         while (actual != null) {
             clases.Paciente p = actual.paciente;
             String nombreCompleto = p.getDni() + " - " + p.getNombre() + " " + p.getApellidoPaterno() + " " + p.getApellidoMaterno();
@@ -156,10 +171,10 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void cargarPacientesEnTabla() {
         listaPaciente.cargarDesdeBD();
-        javax.swing.table.DefaultTableModel modeloTablaPaciente = new javax.swing.table.DefaultTableModel(
+        DefaultTableModel modeloTablaPaciente = new DefaultTableModel(
                 new Object[]{"DNI", "Nombre", "Apellido P.", "Apellido M.", "Fecha N.", "Género", "Dirección", "Teléfono", "Fecha E.", "Fecha S."}, 0
         );
-        estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+        ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
         while (actual != null) {
             clases.Paciente p = actual.paciente;
             modeloTablaPaciente.addRow(new Object[]{
@@ -182,10 +197,10 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void cargarConsultasEnTabla() {
         listaConsultaMedica.cargarDesdeBD();
-        javax.swing.table.DefaultTableModel modeloTablaConsulta = new javax.swing.table.DefaultTableModel(
+        DefaultTableModel modeloTablaConsulta = new DefaultTableModel(
                 new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha"}, 0
         );
-        estructuras.ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
+        ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
         while (actual != null) {
             clases.ConsultaMedica c = actual.consulta;
             String nombrePaciente = c.getPaciente().getDni() + " - " + c.getPaciente().getNombre() + " " + c.getPaciente().getApellidoPaterno();
@@ -300,6 +315,7 @@ public class Aplicacion extends javax.swing.JFrame {
         btnAtenderPaciente.setForeground(new java.awt.Color(255, 255, 255));
         btnAtenderPaciente.setText("Atender paciente");
 
+        tablaColaPacientes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -749,10 +765,10 @@ public class Aplicacion extends javax.swing.JFrame {
         String telefono = txtTelefono.getText();
 
         try {
-            java.util.Date fechaNacimiento = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
-            java.util.Date fechaEntrada = new java.util.Date(); // Fecha actual como entrada
-            java.util.Date fechaSalida = new java.util.Date(); // Por defecto igual a entrada
-            clases.Paciente paciente = new clases.Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
+            java.util.Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+            java.util.Date fechaEntrada = new Date(); // Fecha actual como entrada
+            java.util.Date fechaSalida = new Date(); // Por defecto igual a entrada
+            clases.Paciente paciente = new Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
 
             listaPaciente.guardarEnBD(paciente);
 
@@ -777,9 +793,10 @@ public class Aplicacion extends javax.swing.JFrame {
         String telefono = txtTelefono.getText();
 
         try {
-            java.util.Date fechaNacimiento = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+            Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
             // Buscar el paciente en la lista
-            estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+            ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+
             while (actual != null) {
                 if (actual.paciente.getDni().equals(dni)) {
                     actual.paciente.setNombre(nombre);
@@ -821,7 +838,7 @@ public class Aplicacion extends javax.swing.JFrame {
         String diagnostico = jta_diagnostico.getText().trim();
         String tratamiento = jta_tratamiento.getText().trim();
         String pacienteSeleccionado = (String) jcbxPaciente.getSelectedItem();
-        java.util.Date fechaRegistro = new java.util.Date();
+        Date fechaRegistro = new java.util.Date();
 
         if (diagnostico.isEmpty() || tratamiento.isEmpty() || pacienteSeleccionado == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "Debe completar todos los campos.");
@@ -829,8 +846,9 @@ public class Aplicacion extends javax.swing.JFrame {
         }
 
         String dni = pacienteSeleccionado.split(" - ")[0];
-        clases.Paciente paciente = null;
-        estructuras.ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+        Paciente paciente = null;
+        ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
+
         while (actual != null) {
             if (actual.paciente.getDni().equals(dni)) {
                 paciente = actual.paciente;
@@ -843,13 +861,13 @@ public class Aplicacion extends javax.swing.JFrame {
             return;
         }
 
-        clases.Usuario usuario = usuarioActual;
+        Usuario usuario = usuarioActual;
         if (usuario == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "No hay usuario logueado.");
             return;
         }
 
-        clases.ConsultaMedica consulta = new clases.ConsultaMedica(
+        ConsultaMedica consulta = new ConsultaMedica(
                 0, diagnostico, tratamiento, fechaRegistro, paciente, usuario, null
         );
 
@@ -872,28 +890,32 @@ public class Aplicacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtenderActionPerformed
 
     private void actualizarTablaColaPacientes() {
-        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+        DefaultTableModel modelo = new DefaultTableModel(
                 new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
         );
-        estructuras.ColaDinamicaPaciente.Nodo actual = colaPacientes.frente;
+        ColaDinamicaPaciente.Nodo actual = colaPacientes.frente;
         while (actual != null) {
-            clases.Paciente p = actual.paciente;
+            Paciente p = actual.paciente;
             modelo.addRow(new Object[]{p.getDni(), p.getNombre(), p.getApellidoPaterno(), p.getApellidoMaterno()});
             actual = actual.siguiente;
         }
         tablaColaPacientes.setModel(modelo);
     }
 
+    private String formatearPaciente(Paciente paciente) {
+        return paciente.getNombre() + " " + paciente.getApellidoPaterno() + " - " + paciente.getDni();
+    }
+
     private void actualizarLabelsAtencion() {
         // Paciente actual (frente de la cola)
         if (colaPacientes.frente != null) {
-            clases.Paciente actual = colaPacientes.frente.paciente;
-            lbl_atender_ahora.setText(actual.getNombre() + " " + actual.getApellidoPaterno() + " - " + actual.getDni());
+            Paciente actual = colaPacientes.frente.paciente;
+            lbl_atender_ahora.setText(formatearPaciente(actual));
 
             // Siguiente paciente
             if (colaPacientes.frente.siguiente != null) {
-                clases.Paciente siguiente = colaPacientes.frente.siguiente.paciente;
-                lbl_atender_siguiente.setText(actual.getNombre() + " " + actual.getApellidoPaterno() + " - " + actual.getDni());
+                Paciente siguiente = colaPacientes.frente.siguiente.paciente;
+                lbl_atender_siguiente.setText(formatearPaciente(siguiente));
             } else {
                 lbl_atender_siguiente.setText("No hay siguiente paciente");
             }
@@ -904,12 +926,13 @@ public class Aplicacion extends javax.swing.JFrame {
     }
 
     private void actualizarTablaPilaComprobantes() {
-        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+        DefaultTableModel modelo = new DefaultTableModel(
                 new Object[]{"ID", "Fecha Emisión", "Forma de Pago"}, 0
         );
-        estructuras.PilaDinamicaComprobante.Nodo actual = pilaComprobantes.tope;
+        PilaDinamicaComprobante.Nodo actual = pilaComprobantes.tope;
         while (actual != null) {
-            clases.ComprobantePago c = actual.comprobante;
+            ComprobantePago c = actual.comprobante;
+
             modelo.addRow(new Object[]{c.getIdComprobantePago(), c.getFechaEmision(), c.getPago()});
             actual = actual.siguiente;
         }
