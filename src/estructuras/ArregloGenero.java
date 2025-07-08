@@ -47,15 +47,12 @@ public class ArregloGenero {
         }
     }
 
-    // Búsqueda binaria por nombre (debe estar ordenado)
+    // Búsqueda lineal por nombre
     public Genero buscarPorNombre(String nombre) {
-        int left = 0, right = contador - 1;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            int cmp = generos[mid].getNombre().compareToIgnoreCase(nombre);
-            if (cmp == 0) return generos[mid];
-            if (cmp < 0) left = mid + 1;
-            else right = mid - 1;
+        for (int i = 0; i < contador; i++) {
+            if (generos[i] != null && generos[i].getNombre().equalsIgnoreCase(nombre)) {
+                return generos[i];
+            }
         }
         return null;
     }

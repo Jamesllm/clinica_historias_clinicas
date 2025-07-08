@@ -111,8 +111,12 @@ public class ListaPaciente {
             arregloGenero.cargarDesdeBD();
             Connection conn = Conexion.getInstance().getConexion();
             // Obtener idGenero a partir del nombre
+            System.out.println("DEBUG - Guardando paciente en BD:");
+            System.out.println("  - Género recibido: '" + paciente.getGenero() + "'");
             Genero generoObj = arregloGenero.buscarPorNombre(paciente.getGenero());
+            System.out.println("  - Género encontrado: " + (generoObj != null ? generoObj.getNombre() + " (ID: " + generoObj.getIdGenero() + ")" : "NULL"));
             int idGenero = (generoObj != null) ? generoObj.getIdGenero() : 1; // Por defecto 1 si no se encuentra
+            System.out.println("  - ID Género final: " + idGenero);
             
             // Insertar en persona
             PreparedStatement psPersona = conn.prepareStatement(
@@ -154,8 +158,12 @@ public class ListaPaciente {
             arregloGenero.cargarDesdeBD();
             Connection conn = Conexion.getInstance().getConexion();
             // Obtener idGenero a partir del nombre
+            System.out.println("DEBUG - Actualizando paciente en BD:");
+            System.out.println("  - Género recibido: '" + paciente.getGenero() + "'");
             Genero generoObj = arregloGenero.buscarPorNombre(paciente.getGenero());
+            System.out.println("  - Género encontrado: " + (generoObj != null ? generoObj.getNombre() + " (ID: " + generoObj.getIdGenero() + ")" : "NULL"));
             int idGenero = (generoObj != null) ? generoObj.getIdGenero() : 1;
+            System.out.println("  - ID Género final: " + idGenero);
             
             // Actualizar en persona
             PreparedStatement psPersona = conn.prepareStatement(

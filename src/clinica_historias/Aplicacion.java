@@ -85,9 +85,10 @@ public class Aplicacion extends javax.swing.JFrame {
                     txtFechaNacimiento.setText(tablaPacientes.getValueAt(row, 4).toString());
 
                     // Seleccionar género en el combo
-                    String genero = tablaPacientes.getValueAt(row, 5).toString();
+                    String generoTabla = tablaPacientes.getValueAt(row, 5).toString();
                     for (int i = 0; i < jcbxGenero.getItemCount(); i++) {
-                        if (jcbxGenero.getItemAt(i).toString().equals(genero)) {
+                        Genero generoCombo = (Genero) jcbxGenero.getItemAt(i);
+                        if (generoCombo.getNombre().equals(generoTabla)) {
                             jcbxGenero.setSelectedIndex(i);
                             break;
                         }
@@ -760,7 +761,11 @@ public class Aplicacion extends javax.swing.JFrame {
         String apellidoPaterno = txtApellidoPaterno.getText();
         String apellidoMaterno = txtApellidoMaterno.getText();
         String fechaNacimientoStr = txtFechaNacimiento.getText();
-        String genero = jcbxGenero.getSelectedItem() != null ? jcbxGenero.getSelectedItem().toString() : "";
+        String genero = "";
+        if (jcbxGenero.getSelectedItem() != null) {
+            Genero generoSeleccionado = (Genero) jcbxGenero.getSelectedItem();
+            genero = generoSeleccionado.getNombre();
+        }
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
 
@@ -788,35 +793,38 @@ public class Aplicacion extends javax.swing.JFrame {
         String apellidoPaterno = txtApellidoPaterno.getText();
         String apellidoMaterno = txtApellidoMaterno.getText();
         String fechaNacimientoStr = txtFechaNacimiento.getText();
-        String genero = jcbxGenero.getSelectedItem().toString();
+        String genero = "";
+        if (jcbxGenero.getSelectedItem() != null) {
+            Genero generoSeleccionado = (Genero) jcbxGenero.getSelectedItem();
+            genero = generoSeleccionado.getNombre();
+        }
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
 
         try {
             Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
-            // Buscar el paciente en la lista
-            ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
-
-            while (actual != null) {
-                if (actual.paciente.getDni().equals(dni)) {
-                    actual.paciente.setNombre(nombre);
-                    actual.paciente.setApellidoPaterno(apellidoPaterno);
-                    actual.paciente.setApellidoMaterno(apellidoMaterno);
-                    actual.paciente.setFechaNacimiento(fechaNacimiento);
-                    actual.paciente.setGenero(genero);
-                    actual.paciente.setDireccion(direccion);
-                    actual.paciente.setTelefono(telefono);
-                    // Actualizar en la base de datos
-                    listaPaciente.actualizarEnBD(actual.paciente);
-                    break;
-                }
-                actual = actual.siguiente;
-            }
-            // Refrescar la tabla
+            
+            // Crear un objeto paciente con los datos actualizados
+            Paciente pacienteActualizado = new Paciente(
+                new Date(), // fechaEntrada (no se actualiza)
+                new Date(), // fechaSalida (no se actualiza)
+                dni, nombre, apellidoPaterno, apellidoMaterno, 
+                fechaNacimiento, genero, direccion, telefono
+            );
+            
+            // Actualizar en la base de datos
+            listaPaciente.actualizarEnBD(pacienteActualizado);
+            
+            // Mostrar mensaje de éxito
+            javax.swing.JOptionPane.showMessageDialog(this, "Paciente actualizado correctamente.");
+            
+            // Refrescar la tabla desde la base de datos
             cargarPacientesEnTabla();
+            
             // Limpiar inputs y quitar selección
             limpiarInputsPaciente();
             tablaPacientes.clearSelection();
+            
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
         }
