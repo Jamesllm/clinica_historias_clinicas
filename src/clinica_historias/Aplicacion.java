@@ -581,7 +581,9 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero2.setText("Paciente:");
 
-        btnGuardarConsulta.setBackground(new java.awt.Color(153, 255, 204));
+        btnGuardarConsulta.setBackground(new java.awt.Color(27, 55, 79));
+        btnGuardarConsulta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnGuardarConsulta.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardarConsulta.setText("Guardar");
         btnGuardarConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -589,6 +591,8 @@ public class Aplicacion extends javax.swing.JFrame {
             }
         });
 
+        btnActualizarConsulta.setBackground(new java.awt.Color(102, 255, 255));
+        btnActualizarConsulta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnActualizarConsulta.setText("Actualizar");
 
         jta_tratamiento.setColumns(20);
@@ -606,49 +610,42 @@ public class Aplicacion extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnActualizarConsulta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnGuardarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbxPaciente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Genero2)
-                                    .addComponent(jcbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lbl7, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnActualizarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                            .addComponent(btnGuardarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(34, 34, 34))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(lbl8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(Genero2)
+                            .addComponent(lbl7, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(35, 35, 35))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnGuardarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnActualizarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(Genero2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbl7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(Genero2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcbxPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(lbl8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnActualizarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardarConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
 
         tablaConsultas.setModel(new javax.swing.table.DefaultTableModel(
@@ -669,7 +666,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_ConsultasLayout.setHorizontalGroup(
             jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_ConsultasLayout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
@@ -743,11 +740,17 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPacientesActionPerformed
         PanelTab.setSelectedIndex(1);
         lblCambio.setText("Pacientes");
+        
+        // Cargar la nueva data y actualizar la tabla
+        cargarPacientesEnTabla();
     }//GEN-LAST:event_btnPacientesActionPerformed
 
     private void btnConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultasActionPerformed
         PanelTab.setSelectedIndex(2);
         lblCambio.setText("Consultas");
+        
+        // Cargar la nueva data y actualizar la tabla
+        cargarConsultasEnTabla();
     }//GEN-LAST:event_btnConsultasActionPerformed
 
     private void btnGuardarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPacienteActionPerformed
@@ -895,11 +898,25 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void btnAtenderPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderPacienteActionPerformed
         if (!colaPacientes.isEmpty()) {
-            Paciente paciente = colaPacientes.dequeue();
-            
-            actualizarTablaColaPacientes();
-            actualizarLabelsAtencion();
-            javax.swing.JOptionPane.showMessageDialog(null, "Paciente atendido: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+            // Obtener el paciente del frente sin sacarlo de la cola aún
+            Paciente paciente = colaPacientes.peek();
+
+            // Abrir el JDialog pasándole el paciente
+            JD_Atender jd_atender = new JD_Atender(this, true, paciente, usuarioActual, listaConsultaMedica);
+            jd_atender.setLocationRelativeTo(null);
+            jd_atender.setVisible(true);
+
+            // Verificar si se guardó la consulta exitosamente
+            if (jd_atender.isConsultaGuardada()) {
+                // Solo ahora sacar el paciente de la cola
+                colaPacientes.dequeue();
+                
+                // Actualizar la interfaz
+                actualizarTablaColaPacientes();
+                actualizarLabelsAtencion();
+                
+                javax.swing.JOptionPane.showMessageDialog(null, "Paciente atendido: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+            }
         } else {
             javax.swing.JOptionPane.showMessageDialog(null, "No hay pacientes en la cola.");
         }
