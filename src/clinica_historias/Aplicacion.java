@@ -23,6 +23,7 @@ import estructuras.ListaPaciente;
 import estructuras.ColaDinamicaPaciente;
 import estructuras.ListaConsultaMedica;
 import estructuras.PilaDinamicaComprobante;
+import javax.swing.ImageIcon;
 
 public class Aplicacion extends javax.swing.JFrame {
 
@@ -42,6 +43,9 @@ public class Aplicacion extends javax.swing.JFrame {
     public Aplicacion(Conexion conexionDB) {
         initComponents();
         this.setLocationRelativeTo(null);
+        // Establecer el icono a la aplicacion
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
+        
         this.conexionDB = conexionDB;
 
         // Inicializar estructuras de datos
@@ -350,10 +354,10 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(lbl_atender_ahora1)
                     .addComponent(lbl_atender_siguiente)
                     .addComponent(lbl_atender_ahora2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 383, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
                 .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
-                    .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE))
                 .addGap(14, 14, 14))
         );
         jPanel_AtenderLayout.setVerticalGroup(
@@ -527,6 +531,7 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
+        tablaPacientes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tablaPacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null},
@@ -649,6 +654,7 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
+        tablaConsultas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tablaConsultas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -932,12 +938,12 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void actualizarTablaColaPacientes() {
         DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno"}, 0
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Fecha y hora entrada"}, 0
         );
         ColaDinamicaPaciente.Nodo actual = colaPacientes.frente;
         while (actual != null) {
             Paciente p = actual.paciente;
-            modelo.addRow(new Object[]{p.getDni(), p.getNombre(), p.getApellidoPaterno(), p.getApellidoMaterno()});
+            modelo.addRow(new Object[]{p.getDni(), p.getNombre(), p.getApellidoPaterno(), p.getApellidoMaterno(), p.getFechaEntrada()});
             actual = actual.siguiente;
         }
         tablaColaPacientes.setModel(modelo);

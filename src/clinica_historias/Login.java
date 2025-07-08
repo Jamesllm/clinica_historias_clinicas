@@ -9,6 +9,7 @@ import conexion.Conexion;
 
 // Clases
 import clases.Usuario;
+import javax.swing.ImageIcon;
 
 public class Login extends javax.swing.JFrame {
 
@@ -21,6 +22,10 @@ public class Login extends javax.swing.JFrame {
 
         // Cargar imagen login
         utilidades.Utilidades.setImageLabel(lblImagenLogin, "src/imagenes/login.png");
+        
+        // Establecer el icono a la aplicacion
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
+
 
         // Valores por default
         txtCorreo.setText("12345678");
