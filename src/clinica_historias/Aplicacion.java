@@ -43,9 +43,10 @@ public class Aplicacion extends javax.swing.JFrame {
     public Aplicacion(Conexion conexionDB) {
         initComponents();
         this.setLocationRelativeTo(null);
+
         // Establecer el icono a la aplicacion
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
-        
+
         this.conexionDB = conexionDB;
 
         // Inicializar estructuras de datos
@@ -194,21 +195,25 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void cargarConsultasEnTabla() {
         listaConsultaMedica.cargarDesdeBD();
-        DefaultTableModel modeloTablaConsulta = new DefaultTableModel(
-                new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha"}, 0
+
+         DefaultTableModel modeloTablaConsulta = new DefaultTableModel(
+                new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha Registro"}, 0
         );
         ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
+
         while (actual != null) {
-            clases.ConsultaMedica c = actual.consulta;
-            String nombrePaciente = c.getPaciente().getDni() + " - " + c.getPaciente().getNombre() + " " + c.getPaciente().getApellidoPaterno();
-            String nombreUsuario = c.getUsuario().getNombre() + " " + c.getUsuario().getApellidoPaterno();
+            ConsultaMedica consulta = actual.consulta;
+
+            String nombrePaciente = consulta.getPaciente().getDni() + " - " + consulta.getPaciente().getNombre() + " " + consulta.getPaciente().getApellidoPaterno();
+            String nombreUsuario = consulta.getUsuario().getNombre() + " " + consulta.getUsuario().getApellidoPaterno();
+
             modeloTablaConsulta.addRow(new Object[]{
-                c.getIdConsultaMedica(),
+                consulta.getIdConsultaMedica(),
                 nombrePaciente,
                 nombreUsuario,
-                c.getDiagnostico(),
-                c.getTratamiento(),
-                c.getFechaRegistro()
+                consulta.getDiagnostico(),
+                consulta.getTratamiento(),
+                consulta.getFechaRegistro()
             });
             actual = actual.siguiente;
         }
@@ -587,6 +592,8 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero2.setText("Paciente:");
 
+        jcbxPaciente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         btnGuardarConsulta.setBackground(new java.awt.Color(27, 55, 79));
         btnGuardarConsulta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnGuardarConsulta.setForeground(new java.awt.Color(255, 255, 255));
@@ -602,10 +609,12 @@ public class Aplicacion extends javax.swing.JFrame {
         btnActualizarConsulta.setText("Actualizar");
 
         jta_tratamiento.setColumns(20);
+        jta_tratamiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jta_tratamiento.setRows(5);
         jScrollPane3.setViewportView(jta_tratamiento);
 
         jta_diagnostico.setColumns(20);
+        jta_diagnostico.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jta_diagnostico.setRows(5);
         jScrollPane4.setViewportView(jta_diagnostico);
 
@@ -747,7 +756,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPacientesActionPerformed
         PanelTab.setSelectedIndex(1);
         lblCambio.setText("Pacientes");
-        
+
         // Cargar la nueva data y actualizar la tabla
         cargarPacientesEnTabla();
     }//GEN-LAST:event_btnPacientesActionPerformed
@@ -755,7 +764,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultasActionPerformed
         PanelTab.setSelectedIndex(2);
         lblCambio.setText("Consultas");
-        
+
         // Cargar la nueva data y actualizar la tabla
         cargarConsultasEnTabla();
     }//GEN-LAST:event_btnConsultasActionPerformed
@@ -809,28 +818,28 @@ public class Aplicacion extends javax.swing.JFrame {
 
         try {
             Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
-            
+
             // Crear un objeto paciente con los datos actualizados
             Paciente pacienteActualizado = new Paciente(
-                new Date(), // fechaEntrada (no se actualiza)
-                new Date(), // fechaSalida (no se actualiza)
-                dni, nombre, apellidoPaterno, apellidoMaterno, 
-                fechaNacimiento, genero, direccion, telefono
+                    new Date(), // fechaEntrada (no se actualiza)
+                    new Date(), // fechaSalida (no se actualiza)
+                    dni, nombre, apellidoPaterno, apellidoMaterno,
+                    fechaNacimiento, genero, direccion, telefono
             );
-            
+
             // Actualizar en la base de datos
             listaPaciente.actualizarEnBD(pacienteActualizado);
-            
+
             // Mostrar mensaje de éxito
             javax.swing.JOptionPane.showMessageDialog(this, "Paciente actualizado correctamente.");
-            
+
             // Refrescar la tabla desde la base de datos
             cargarPacientesEnTabla();
-            
+
             // Limpiar inputs y quitar selección
             limpiarInputsPaciente();
             tablaPacientes.clearSelection();
-            
+
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
         }
@@ -924,11 +933,11 @@ public class Aplicacion extends javax.swing.JFrame {
             if (jd_atender.isConsultaGuardada()) {
                 // Solo ahora sacar el paciente de la cola
                 colaPacientes.dequeue();
-                
+
                 // Actualizar la interfaz
                 actualizarTablaColaPacientes();
                 actualizarLabelsAtencion();
-                
+
                 javax.swing.JOptionPane.showMessageDialog(null, "Paciente atendido: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
             }
         } else {
