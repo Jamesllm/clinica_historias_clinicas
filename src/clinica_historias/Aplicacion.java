@@ -196,16 +196,19 @@ public class Aplicacion extends javax.swing.JFrame {
     private void cargarConsultasEnTabla() {
         listaConsultaMedica.cargarDesdeBD();
 
-         DefaultTableModel modeloTablaConsulta = new DefaultTableModel(
-                new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha Registro"}, 0
+        DefaultTableModel modeloTablaConsulta = new DefaultTableModel(
+            new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha Registro"}, 0
         );
         ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
 
         while (actual != null) {
             ConsultaMedica consulta = actual.consulta;
 
-            String nombrePaciente = consulta.getPaciente().getDni() + " - " + consulta.getPaciente().getNombre() + " " + consulta.getPaciente().getApellidoPaterno();
-            String nombreUsuario = consulta.getUsuario().getNombre() + " " + consulta.getUsuario().getApellidoPaterno();
+            Paciente paciente = consulta.getPaciente();
+            Usuario usuario = consulta.getUsuario();
+
+            String nombrePaciente = String.format("%s - %s %s", paciente.getDni(), paciente.getNombre(), paciente.getApellidoPaterno());
+            String nombreUsuario = String.format("%s %s", usuario.getNombre(), usuario.getApellidoPaterno());
 
             modeloTablaConsulta.addRow(new Object[]{
                 consulta.getIdConsultaMedica(),
