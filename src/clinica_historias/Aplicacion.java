@@ -50,6 +50,8 @@ public class Aplicacion extends javax.swing.JFrame {
         listaConsultaMedica = new ListaConsultaMedica();
         colaPacientes = new ColaDinamicaPaciente();
         pilaComprobantes = new PilaDinamicaComprobante();
+
+        // Cargar datos desde la BD
         colaPacientes.cargarDesdeBD();
         pilaComprobantes.cargarDesdeBD();
 
@@ -101,9 +103,11 @@ public class Aplicacion extends javax.swing.JFrame {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 if (!evt.getValueIsAdjusting() && tablaConsultas.getSelectedRow() != -1) {
                     int row = tablaConsultas.getSelectedRow();
+
                     // Diagnóstico y tratamiento
                     jta_diagnostico.setText(tablaConsultas.getValueAt(row, 3).toString());
                     jta_tratamiento.setText(tablaConsultas.getValueAt(row, 4).toString());
+
                     // Paciente (combo) - buscar por DNI
                     String pacienteCombo = tablaConsultas.getValueAt(row, 1).toString();
                     String dniTabla = pacienteCombo.split(" - ")[0].trim();
@@ -130,18 +134,6 @@ public class Aplicacion extends javax.swing.JFrame {
         actualizarTablaColaPacientes();
         actualizarLabelsAtencion();
 
-        btnAtenderPaciente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (!colaPacientes.isEmpty()) {
-                    clases.Paciente paciente = colaPacientes.dequeue();
-                    actualizarTablaColaPacientes();
-                    actualizarLabelsAtencion();
-                    javax.swing.JOptionPane.showMessageDialog(null, "Paciente atendido: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
-                } else {
-                    javax.swing.JOptionPane.showMessageDialog(null, "No hay pacientes en la cola.");
-                }
-            }
-        });
     }
 
     private void cargarGenerosEnCombo() {
@@ -162,7 +154,7 @@ public class Aplicacion extends javax.swing.JFrame {
         ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
 
         while (actual != null) {
-            clases.Paciente p = actual.paciente;
+            Paciente p = actual.paciente;
             String nombreCompleto = p.getDni() + " - " + p.getNombre() + " " + p.getApellidoPaterno() + " " + p.getApellidoMaterno();
             jcbxPaciente.addItem(nombreCompleto);
             actual = actual.siguiente;
@@ -176,7 +168,7 @@ public class Aplicacion extends javax.swing.JFrame {
         );
         ListaPaciente.NodoPaciente actual = listaPaciente.getCabeza();
         while (actual != null) {
-            clases.Paciente p = actual.paciente;
+            Paciente p = actual.paciente;
             modeloTablaPaciente.addRow(new Object[]{
                 p.getDni(),
                 p.getNombre(),
@@ -314,6 +306,11 @@ public class Aplicacion extends javax.swing.JFrame {
         btnAtenderPaciente.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAtenderPaciente.setForeground(new java.awt.Color(255, 255, 255));
         btnAtenderPaciente.setText("Atender paciente");
+        btnAtenderPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtenderPacienteActionPerformed(evt);
+            }
+        });
 
         tablaColaPacientes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tablaColaPacientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -765,10 +762,10 @@ public class Aplicacion extends javax.swing.JFrame {
         String telefono = txtTelefono.getText();
 
         try {
-            java.util.Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
-            java.util.Date fechaEntrada = new Date(); // Fecha actual como entrada
-            java.util.Date fechaSalida = new Date(); // Por defecto igual a entrada
-            clases.Paciente paciente = new Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
+            Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+            Date fechaEntrada = new Date(); // Fecha actual como entrada
+            Date fechaSalida = new Date(); // Por defecto igual a entrada
+            Paciente paciente = new Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
 
             listaPaciente.guardarEnBD(paciente);
 
@@ -887,7 +884,26 @@ public class Aplicacion extends javax.swing.JFrame {
     private void btnAtenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderActionPerformed
         PanelTab.setSelectedIndex(0);
         lblCambio.setText("Atender");
+
+        // Recargar la cola desde la BD para obtener los pacientes más recientes
+        colaPacientes.cargarDesdeBD();
+
+        // Actualizar la interfaz
+        actualizarTablaColaPacientes();
+        actualizarLabelsAtencion();
     }//GEN-LAST:event_btnAtenderActionPerformed
+
+    private void btnAtenderPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderPacienteActionPerformed
+        if (!colaPacientes.isEmpty()) {
+            Paciente paciente = colaPacientes.dequeue();
+            
+            actualizarTablaColaPacientes();
+            actualizarLabelsAtencion();
+            javax.swing.JOptionPane.showMessageDialog(null, "Paciente atendido: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "No hay pacientes en la cola.");
+        }
+    }//GEN-LAST:event_btnAtenderPacienteActionPerformed
 
     private void actualizarTablaColaPacientes() {
         DefaultTableModel modelo = new DefaultTableModel(

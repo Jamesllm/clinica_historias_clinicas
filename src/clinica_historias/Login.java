@@ -1,14 +1,14 @@
 package clinica_historias;
 
-import conexion.Conexion;
+import conexion.LoginService;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+// Conexion a la base de datos
+import conexion.Conexion;
+
+// Clases
 import clases.Usuario;
-import clases.Especialidad;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Date;
 
 public class Login extends javax.swing.JFrame {
 
@@ -18,14 +18,14 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.conexionDB = conexionDB;
-        
+
         // Cargar imagen login
         utilidades.Utilidades.setImageLabel(lblImagenLogin, "src/imagenes/login.png");
-        
-        // default
+
+        // Valores por default
         txtCorreo.setText("12345678");
         txtContraseña.setText("1234");
-        
+
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -173,7 +173,7 @@ public class Login extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al intentar iniciar sesión: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnLoginActionPerformed
-    
+
     /**
      * Método para cerrar la conexión de manera segura
      */
