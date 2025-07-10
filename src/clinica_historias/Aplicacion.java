@@ -64,11 +64,6 @@ public class Aplicacion extends javax.swing.JFrame {
         cargarPacientesEnTabla();
         cargarConsultasEnTabla();
 
-        // Ejemplo de eliminación lógica de género (por id)
-        // arregloGenero.eliminarLogico(1); // Elimina lógicamente el género con id 1
-        // arregloGenero.guardarEnBD(); // Guarda los cambios en la base de datos
-        // Ejemplo de eliminación de paciente en memoria (por DNI)
-        // listaPaciente.eliminarPorDni("12345678");
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -87,7 +82,24 @@ public class Aplicacion extends javax.swing.JFrame {
                     txtNombre.setText(tablaPacientes.getValueAt(row, 1).toString());
                     txtApellidoPaterno.setText(tablaPacientes.getValueAt(row, 2).toString());
                     txtApellidoMaterno.setText(tablaPacientes.getValueAt(row, 3).toString());
-                    txtFechaNacimiento.setText(tablaPacientes.getValueAt(row, 4).toString());
+                    // Cambiar para que el JDateChooser reciba un Date
+                    try {
+                        Object fechaObj = tablaPacientes.getValueAt(row, 4);
+                        if (fechaObj != null) {
+                            java.util.Date fecha = null;
+                            if (fechaObj instanceof java.util.Date) {
+                                fecha = (java.util.Date) fechaObj;
+                            } else {
+                                // Intentar parsear si es String
+                                fecha = new java.text.SimpleDateFormat("yyyy-MM-dd").parse(fechaObj.toString());
+                            }
+                            txtFechaNacimiento.setDate(fecha);
+                        } else {
+                            txtFechaNacimiento.setDate(null);
+                        }
+                    } catch (Exception e) {
+                        txtFechaNacimiento.setDate(null);
+                    }
 
                     // Seleccionar género en el combo
                     String generoTabla = tablaPacientes.getValueAt(row, 5).toString();
@@ -256,7 +268,6 @@ public class Aplicacion extends javax.swing.JFrame {
         txtApellidoPaterno = new javax.swing.JTextField();
         Genero = new javax.swing.JLabel();
         jcbxGenero = new javax.swing.JComboBox<>();
-        txtFechaNacimiento = new javax.swing.JTextField();
         lbl4 = new javax.swing.JLabel();
         lbl5 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
@@ -266,6 +277,7 @@ public class Aplicacion extends javax.swing.JFrame {
         btnActualizarPaciente = new javax.swing.JButton();
         txtApellidoMaterno = new javax.swing.JTextField();
         lbl6 = new javax.swing.JLabel();
+        txtFechaNacimiento = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPacientes = new javax.swing.JTable();
         jPanel_Consultas = new javax.swing.JPanel();
@@ -416,9 +428,6 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero.setText("Género");
 
-        txtFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFechaNacimiento.setMargin(new java.awt.Insets(2, 10, 2, 10));
-
         lbl4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbl4.setText("Direccion");
 
@@ -482,17 +491,17 @@ public class Aplicacion extends javax.swing.JFrame {
                             .addComponent(btnActualizarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35))
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Genero1)
+                            .addComponent(Genero))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jcbxGenero, javax.swing.GroupLayout.Alignment.LEADING, 0, 186, Short.MAX_VALUE)
                             .addComponent(lbl6, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Genero1)
-                            .addComponent(Genero)
-                            .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -521,8 +530,8 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addComponent(jcbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Genero1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -573,7 +582,7 @@ public class Aplicacion extends javax.swing.JFrame {
         );
         jPanel_PacienteLayout.setVerticalGroup(
             jPanel_PacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 545, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel_PacienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -778,7 +787,7 @@ public class Aplicacion extends javax.swing.JFrame {
         String nombre = txtNombre.getText();
         String apellidoPaterno = txtApellidoPaterno.getText();
         String apellidoMaterno = txtApellidoMaterno.getText();
-        String fechaNacimientoStr = txtFechaNacimiento.getText();
+        Date fechaNacimiento = txtFechaNacimiento.getDate();
         String genero = "";
         if (jcbxGenero.getSelectedItem() != null) {
             Genero generoSeleccionado = (Genero) jcbxGenero.getSelectedItem();
@@ -787,8 +796,12 @@ public class Aplicacion extends javax.swing.JFrame {
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
 
+        if (fechaNacimiento == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha de nacimiento.");
+            return;
+        }
+
         try {
-            Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
             Date fechaEntrada = new Date(); // Fecha actual como entrada
             Date fechaSalida = new Date(); // Por defecto igual a entrada
             Paciente paciente = new Paciente(fechaEntrada, fechaSalida, dni, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, genero, direccion, telefono);
@@ -810,7 +823,7 @@ public class Aplicacion extends javax.swing.JFrame {
         String nombre = txtNombre.getText();
         String apellidoPaterno = txtApellidoPaterno.getText();
         String apellidoMaterno = txtApellidoMaterno.getText();
-        String fechaNacimientoStr = txtFechaNacimiento.getText();
+        Date fechaNacimiento = txtFechaNacimiento.getDate();
         String genero = "";
         if (jcbxGenero.getSelectedItem() != null) {
             Genero generoSeleccionado = (Genero) jcbxGenero.getSelectedItem();
@@ -819,13 +832,16 @@ public class Aplicacion extends javax.swing.JFrame {
         String direccion = txtDireccion.getText();
         String telefono = txtTelefono.getText();
 
-        try {
-            Date fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+        if (fechaNacimiento == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha de nacimiento.");
+            return;
+        }
 
+        try {
             // Crear un objeto paciente con los datos actualizados
             Paciente pacienteActualizado = new Paciente(
-                    new Date(), // fechaEntrada (no se actualiza)
-                    new Date(), // fechaSalida (no se actualiza)
+                    new Date(), 
+                    new Date(), 
                     dni, nombre, apellidoPaterno, apellidoMaterno,
                     fechaNacimiento, genero, direccion, telefono
             );
@@ -854,7 +870,7 @@ public class Aplicacion extends javax.swing.JFrame {
         txtNombre.setText("");
         txtApellidoPaterno.setText("");
         txtApellidoMaterno.setText("");
-        txtFechaNacimiento.setText("");
+        txtFechaNacimiento.setDate(null);
         jcbxGenero.setSelectedIndex(-1);
         txtDireccion.setText("");
         txtTelefono.setText("");
@@ -1062,7 +1078,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JTextField txtApellidoPaterno;
     private javax.swing.JTextField txtDNI;
     private javax.swing.JTextField txtDireccion;
-    private javax.swing.JTextField txtFechaNacimiento;
+    private com.toedter.calendar.JDateChooser txtFechaNacimiento;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
