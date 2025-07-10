@@ -151,7 +151,6 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_Atender.repaint();
         actualizarTablaColaPacientes();
         actualizarLabelsAtencion();
-
     }
 
     private void cargarGenerosEnCombo() {
@@ -998,20 +997,6 @@ public class Aplicacion extends javax.swing.JFrame {
             lbl_atender_ahora.setText("No hay pacientes en la cola");
             lbl_atender_siguiente.setText("No hay siguiente paciente");
         }
-    }
-
-    private void actualizarTablaPilaComprobantes() {
-        DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"ID", "Fecha Emisión", "Forma de Pago"}, 0
-        );
-        PilaDinamicaComprobante.Nodo actual = pilaComprobantes.tope;
-        while (actual != null) {
-            ComprobantePago c = actual.comprobante;
-
-            modelo.addRow(new Object[]{c.getIdComprobantePago(), c.getFechaEmision(), c.getPago()});
-            actual = actual.siguiente;
-        }
-        //tablaPilaComprobantes.setModel(modelo);
     }
 
     /**
