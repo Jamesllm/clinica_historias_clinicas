@@ -208,7 +208,7 @@ public class Aplicacion extends javax.swing.JFrame {
         listaConsultaMedica.cargarDesdeBD();
 
         DefaultTableModel modeloTablaConsulta = new DefaultTableModel(
-            new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha Registro"}, 0
+                new Object[]{"ID", "Paciente", "Usuario", "Diagnóstico", "Tratamiento", "Fecha Registro"}, 0
         );
         ListaConsultaMedica.NodoConsulta actual = listaConsultaMedica.cabeza;
 
@@ -293,10 +293,14 @@ public class Aplicacion extends javax.swing.JFrame {
         jta_diagnostico = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaConsultas = new javax.swing.JTable();
+        jPanel_Comprobantes = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        Genero3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         btnAtender = new javax.swing.JButton();
         btnPacientes = new javax.swing.JButton();
         btnConsultas = new javax.swing.JButton();
+        btnConsultas1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MI_CerrarSesion = new javax.swing.JMenuItem();
@@ -711,6 +715,47 @@ public class Aplicacion extends javax.swing.JFrame {
 
         PanelTab.addTab("tab2", jPanel_Consultas);
 
+        jPanel_Comprobantes.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        Genero3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Genero3.setText("Comprobante");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Genero3)
+                .addContainerGap(237, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Genero3)
+                .addContainerGap(516, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel_ComprobantesLayout = new javax.swing.GroupLayout(jPanel_Comprobantes);
+        jPanel_Comprobantes.setLayout(jPanel_ComprobantesLayout);
+        jPanel_ComprobantesLayout.setHorizontalGroup(
+            jPanel_ComprobantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_ComprobantesLayout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(864, Short.MAX_VALUE))
+        );
+        jPanel_ComprobantesLayout.setVerticalGroup(
+            jPanel_ComprobantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_ComprobantesLayout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        PanelTab.addTab("tab2", jPanel_Comprobantes);
+
         getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 64, 1200, 580));
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -739,7 +784,15 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 320, 30));
+        btnConsultas1.setText("Comprobantes");
+        btnConsultas1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultas1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnConsultas1);
+
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 500, 30));
 
         jMenu1.setText("Cuenta");
 
@@ -839,8 +892,8 @@ public class Aplicacion extends javax.swing.JFrame {
         try {
             // Crear un objeto paciente con los datos actualizados
             Paciente pacienteActualizado = new Paciente(
-                    new Date(), 
-                    new Date(), 
+                    new Date(),
+                    new Date(),
                     dni, nombre, apellidoPaterno, apellidoMaterno,
                     fechaNacimiento, genero, direccion, telefono
             );
@@ -963,6 +1016,13 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAtenderPacienteActionPerformed
 
+    private void btnConsultas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultas1ActionPerformed
+        PanelTab.setSelectedIndex(3);
+        lblCambio.setText("Comprobantes");
+
+       
+    }//GEN-LAST:event_btnConsultas1ActionPerformed
+
     private void actualizarTablaColaPacientes() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Fecha y hora entrada"}, 0
@@ -1012,6 +1072,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel Genero;
     private javax.swing.JLabel Genero1;
     private javax.swing.JLabel Genero2;
+    private javax.swing.JLabel Genero3;
     private javax.swing.JMenuItem MI_CerrarSesion;
     private javax.swing.JTabbedPane PanelTab;
     private javax.swing.JButton btnActualizarConsulta;
@@ -1019,6 +1080,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnAtender;
     private javax.swing.JButton btnAtenderPaciente;
     private javax.swing.JButton btnConsultas;
+    private javax.swing.JButton btnConsultas1;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
     private javax.swing.JButton btnPacientes;
@@ -1031,7 +1093,9 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel_Atender;
+    private javax.swing.JPanel jPanel_Comprobantes;
     private javax.swing.JPanel jPanel_Consultas;
     private javax.swing.JPanel jPanel_Paciente;
     private javax.swing.JScrollPane jScrollPane1;
