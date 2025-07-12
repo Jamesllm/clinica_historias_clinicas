@@ -23,6 +23,7 @@ import estructuras.ListaPaciente;
 import estructuras.ColaDinamicaPaciente;
 import estructuras.ListaConsultaMedica;
 import estructuras.PilaDinamicaComprobante;
+import estructuras.ArbolBBPaciente;
 import javax.swing.ImageIcon;
 
 public class Aplicacion extends javax.swing.JFrame {
@@ -34,6 +35,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private ListaConsultaMedica listaConsultaMedica;
     private ColaDinamicaPaciente colaPacientes;
     private PilaDinamicaComprobante pilaComprobantes;
+    private ArbolBBPaciente arbolBBPacientes;
 
     public Aplicacion(Conexion conexionDB, Usuario usuarioActual) {
         this(conexionDB);
@@ -55,6 +57,7 @@ public class Aplicacion extends javax.swing.JFrame {
         listaConsultaMedica = new ListaConsultaMedica();
         colaPacientes = new ColaDinamicaPaciente();
         pilaComprobantes = new PilaDinamicaComprobante();
+        arbolBBPacientes = new ArbolBBPaciente();
 
         // Cargar datos desde la BD
         colaPacientes.cargarDesdeBD();
@@ -63,6 +66,7 @@ public class Aplicacion extends javax.swing.JFrame {
         cargarGenerosEnCombo();
         cargarPacientesEnTabla();
         cargarConsultasEnTabla();
+        cargarArbolBBPacientes();
 
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
         this.addWindowListener(new WindowAdapter() {
@@ -234,6 +238,13 @@ public class Aplicacion extends javax.swing.JFrame {
         tablaConsultas.setModel(modeloTablaConsulta);
     }
 
+    private void cargarArbolBBPacientes() {
+        // Cargar pacientes desde la BD a la lista
+        listaPaciente.cargarDesdeBD();
+        // Cargar la lista en el árbol ABB
+        arbolBBPacientes.cargarDesdeLista(listaPaciente);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -252,6 +263,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_Atender = new javax.swing.JPanel();
         btnAtenderPaciente = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
+        jScrollPane6 = new javax.swing.JScrollPane();
         tablaColaPacientes = new javax.swing.JTable();
         lbl_atender_ahora = new javax.swing.JLabel();
         lbl_atender_ahora1 = new javax.swing.JLabel();
@@ -296,11 +308,19 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_Comprobantes = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         Genero3 = new javax.swing.JLabel();
+        jPanel_BuscarPaciente_ABB = new javax.swing.JPanel();
+        Genero4 = new javax.swing.JLabel();
+        ABB_InputBuscar = new javax.swing.JTextField();
+        ABB_BuscarPaciente = new javax.swing.JToggleButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        ABB_Tabla = new javax.swing.JTable();
+        ABB_MostrarTodos = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         btnAtender = new javax.swing.JButton();
         btnPacientes = new javax.swing.JButton();
         btnConsultas = new javax.swing.JButton();
         btnConsultas1 = new javax.swing.JButton();
+        btnConsultas2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MI_CerrarSesion = new javax.swing.JMenuItem();
@@ -756,6 +776,81 @@ public class Aplicacion extends javax.swing.JFrame {
 
         PanelTab.addTab("tab2", jPanel_Comprobantes);
 
+        jPanel_BuscarPaciente_ABB.setBackground(new java.awt.Color(255, 255, 255));
+
+        Genero4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Genero4.setText("Ingrese DNI");
+
+        ABB_InputBuscar.setText("jTextField1");
+
+        ABB_BuscarPaciente.setText("Buscar");
+        ABB_BuscarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ABB_BuscarPacienteActionPerformed(evt);
+            }
+        });
+
+        ABB_Tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(ABB_Tabla);
+
+        ABB_MostrarTodos.setText("Mostrar todos");
+        ABB_MostrarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ABB_MostrarTodosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel_BuscarPaciente_ABBLayout = new javax.swing.GroupLayout(jPanel_BuscarPaciente_ABB);
+        jPanel_BuscarPaciente_ABB.setLayout(jPanel_BuscarPaciente_ABBLayout);
+        jPanel_BuscarPaciente_ABBLayout.setHorizontalGroup(
+            jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
+                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Genero4)
+                            .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
+                                .addComponent(ABB_InputBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ABB_BuscarPaciente)))
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(ABB_MostrarTodos)
+                        .addGap(84, 84, 84)))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 741, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        jPanel_BuscarPaciente_ABBLayout.setVerticalGroup(
+            jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
+                        .addComponent(Genero4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ABB_BuscarPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                            .addComponent(ABB_InputBuscar))
+                        .addGap(76, 76, 76)
+                        .addComponent(ABB_MostrarTodos)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        PanelTab.addTab("tab5", jPanel_BuscarPaciente_ABB);
+
         getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 64, 1200, 580));
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -792,7 +887,15 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas1);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 500, 30));
+        btnConsultas2.setText("Buscar Paciente");
+        btnConsultas2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultas2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnConsultas2);
+
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 730, 30));
 
         jMenu1.setText("Cuenta");
 
@@ -1023,6 +1126,75 @@ public class Aplicacion extends javax.swing.JFrame {
        
     }//GEN-LAST:event_btnConsultas1ActionPerformed
 
+    private void btnConsultas2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultas2ActionPerformed
+         PanelTab.setSelectedIndex(4);
+        lblCambio.setText("Buscar Paciente");
+
+       
+    }//GEN-LAST:event_btnConsultas2ActionPerformed
+
+    private void ABB_BuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABB_BuscarPacienteActionPerformed
+        String dni = ABB_InputBuscar.getText().trim();
+        if (dni.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe ingresar un DNI para buscar.");
+            return;
+        }
+
+        Paciente paciente = arbolBBPacientes.buscar(dni);
+        if (paciente != null) {
+            // Mostrar el paciente encontrado en la tabla
+            DefaultTableModel modelo = new DefaultTableModel(
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+            );
+            modelo.addRow(new Object[]{
+                paciente.getDni(),
+                paciente.getNombre(),
+                paciente.getApellidoPaterno(),
+                paciente.getApellidoMaterno(),
+                paciente.getGenero()
+            });
+            ABB_Tabla.setModel(modelo);
+            
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Paciente encontrado: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontró ningún paciente con DNI: " + dni);
+            // Limpiar tabla
+            ABB_Tabla.setModel(new DefaultTableModel(
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+            ));
+        }
+    }//GEN-LAST:event_ABB_BuscarPacienteActionPerformed
+
+    private void ABB_MostrarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABB_MostrarTodosActionPerformed
+        if (arbolBBPacientes.estaVacio()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay pacientes en el árbol ABB.");
+            return;
+        }
+
+        // Obtener todos los pacientes ordenados por DNI (in-order)
+        java.util.List<Paciente> pacientes = arbolBBPacientes.obtenerPacientesOrdenados();
+        
+        DefaultTableModel modelo = new DefaultTableModel(
+            new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+        );
+        
+        for (Paciente p : pacientes) {
+            modelo.addRow(new Object[]{
+                p.getDni(),
+                p.getNombre(),
+                p.getApellidoPaterno(),
+                p.getApellidoMaterno(),
+                p.getGenero()
+            });
+        }
+        
+        ABB_Tabla.setModel(modelo);
+        
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Se muestran " + pacientes.size() + " pacientes ordenados por DNI (recorrido in-order)");
+    }//GEN-LAST:event_ABB_MostrarTodosActionPerformed
+
     private void actualizarTablaColaPacientes() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Fecha y hora entrada"}, 0
@@ -1069,10 +1241,15 @@ public class Aplicacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton ABB_BuscarPaciente;
+    private javax.swing.JTextField ABB_InputBuscar;
+    private javax.swing.JButton ABB_MostrarTodos;
+    private javax.swing.JTable ABB_Tabla;
     private javax.swing.JLabel Genero;
     private javax.swing.JLabel Genero1;
     private javax.swing.JLabel Genero2;
     private javax.swing.JLabel Genero3;
+    private javax.swing.JLabel Genero4;
     private javax.swing.JMenuItem MI_CerrarSesion;
     private javax.swing.JTabbedPane PanelTab;
     private javax.swing.JButton btnActualizarConsulta;
@@ -1081,6 +1258,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnAtenderPaciente;
     private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnConsultas1;
+    private javax.swing.JButton btnConsultas2;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
     private javax.swing.JButton btnPacientes;
@@ -1095,6 +1273,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel_Atender;
+    private javax.swing.JPanel jPanel_BuscarPaciente_ABB;
     private javax.swing.JPanel jPanel_Comprobantes;
     private javax.swing.JPanel jPanel_Consultas;
     private javax.swing.JPanel jPanel_Paciente;
@@ -1103,6 +1282,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JComboBox<Genero> jcbxGenero;
     private javax.swing.JComboBox<String> jcbxPaciente;
     private javax.swing.JTextArea jta_diagnostico;

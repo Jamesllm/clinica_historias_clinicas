@@ -12,8 +12,9 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
 
 - Arreglo unidimensional: géneros
 - Lista enlazada: pacientes, historial de consultas
-- Pila dinámica: comprobantes de pago
+- Pila dinámica: comprobantes de pago (falta implementar)
 - Cola dinámica: atención de pacientes
+- Árbol Binario de Búsqueda (ABB): búsqueda eficiente de pacientes por DNI
 
 ## Diagrama de Clases
 Ver archivo `diagrama_uml.puml`
