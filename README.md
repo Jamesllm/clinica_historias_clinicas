@@ -9,13 +9,11 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
 - PlantUML (diagrama de clases)
 
 ## Estructuras implementadas
-- Arreglo unidimensional: formas de pago, especialidades
-- Lista enlazada: historial de consultas
-- Pila: deshacer acciones
-- Cola con prioridad: atención por urgencia
-- ABB y AVL: organización y búsqueda eficiente
-- TAD personalizado: estructura jerárquica clínica
-- Lectura/escritura de archivos: exportación o logs
+
+- Arreglo unidimensional: géneros
+- Lista enlazada: pacientes, historial de consultas
+- Pila dinámica: comprobantes de pago
+- Cola dinámica: atención de pacientes
 
 ## Diagrama de Clases
 Ver archivo `diagrama_uml.puml`
