@@ -1,4 +1,4 @@
-package clinica_historias;
+package vista;
 
 import clases.Paciente;
 import clases.Usuario;

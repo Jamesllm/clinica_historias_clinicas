@@ -1,4 +1,4 @@
-package clinica_historias;
+package vista;
 
 import conexion.LoginService;
 import java.awt.event.WindowAdapter;

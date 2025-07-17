@@ -1,4 +1,4 @@
-package clinica_historias;
+package vista;
 
 import com.formdev.flatlaf.FlatLightLaf;
 

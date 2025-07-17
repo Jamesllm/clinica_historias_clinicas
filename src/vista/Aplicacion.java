@@ -1,4 +1,4 @@
-package clinica_historias;
+package vista;
 
 // Clases java
 import java.awt.event.WindowAdapter;
@@ -263,7 +263,6 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_Atender = new javax.swing.JPanel();
         btnAtenderPaciente = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jScrollPane6 = new javax.swing.JScrollPane();
         tablaColaPacientes = new javax.swing.JTable();
         lbl_atender_ahora = new javax.swing.JLabel();
         lbl_atender_ahora1 = new javax.swing.JLabel();
@@ -598,7 +597,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_PacienteLayout.setHorizontalGroup(
             jPanel_PacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_PacienteLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -784,11 +783,6 @@ public class Aplicacion extends javax.swing.JFrame {
         ABB_InputBuscar.setText("jTextField1");
 
         ABB_BuscarPaciente.setText("Buscar");
-        ABB_BuscarPaciente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ABB_BuscarPacienteActionPerformed(evt);
-            }
-        });
 
         ABB_Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -804,11 +798,6 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane6.setViewportView(ABB_Tabla);
 
         ABB_MostrarTodos.setText("Mostrar todos");
-        ABB_MostrarTodos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ABB_MostrarTodosActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel_BuscarPaciente_ABBLayout = new javax.swing.GroupLayout(jPanel_BuscarPaciente_ABB);
         jPanel_BuscarPaciente_ABB.setLayout(jPanel_BuscarPaciente_ABBLayout);
