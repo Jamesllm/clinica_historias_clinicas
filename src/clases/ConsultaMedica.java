@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ *
+ * @author Llapapasca Montes
+ * @author Izquierdo Castro
+ */
 public class ConsultaMedica {
 
     private int idConsultaMedica;

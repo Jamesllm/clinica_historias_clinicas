@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  *
  * @author Llapapasca Montes
+ * @author Izquierdo Castro
  */
 public class Paciente extends Persona {
 

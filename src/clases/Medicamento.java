@@ -1,5 +1,10 @@
 package clases;
 
+/**
+ *
+ * @author Llapapasca Montes
+ * @author Izquierdo Castro
+ */
 public class Medicamento {
 
     private int idMedicamento;

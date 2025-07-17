@@ -2,6 +2,11 @@ package clases;
 
 import java.util.Date;
 
+/**
+ *
+ * @author Llapapasca Montes
+ * @author Izquierdo Castro
+ */
 public class ComprobantePago {
 
     private int idComprobantePago;

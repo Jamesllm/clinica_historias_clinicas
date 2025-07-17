@@ -6,6 +6,7 @@ import java.util.List;
 /**
  *
  * @author Llapapasca Montes
+ * @author Izquierdo Castro
  */
 public class Especialidad {
 
