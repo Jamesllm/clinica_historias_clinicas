@@ -43,10 +43,10 @@ public class ArbolBBPaciente {
 
     // Buscar paciente por DNI
     public Paciente buscar(String dni) {
-        return buscarRec(raiz, dni);
+        return buscarRecursivo(raiz, dni);
     }
 
-    private Paciente buscarRec(Nodo actual, String dni) {
+    private Paciente buscarRecursivo(Nodo actual, String dni) {
         if (actual == null) {
             return null;
         }
@@ -54,9 +54,9 @@ public class ArbolBBPaciente {
         if (cmp == 0) {
             return actual.paciente;
         } else if (cmp < 0) {
-            return buscarRec(actual.izquierdo, dni);
+            return buscarRecursivo(actual.izquierdo, dni);
         } else {
-            return buscarRec(actual.derecho, dni);
+            return buscarRecursivo(actual.derecho, dni);
         }
     }
 

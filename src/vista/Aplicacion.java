@@ -789,13 +789,13 @@ public class Aplicacion extends javax.swing.JFrame {
 
         ABB_Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"
             }
         ));
         jScrollPane6.setViewportView(ABB_Tabla);
