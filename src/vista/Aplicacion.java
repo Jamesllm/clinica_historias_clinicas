@@ -314,6 +314,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         Genero3 = new javax.swing.JLabel();
         btnVerUltimoComprobante = new javax.swing.JButton();
+        btnMostrarComprobantes = new javax.swing.JButton();
         btnDeshacerComprobante = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         tablaComprobantes = new javax.swing.JTable();
@@ -762,6 +763,13 @@ public class Aplicacion extends javax.swing.JFrame {
             }
         });
 
+        btnMostrarComprobantes.setText("Mostrar comprobantes");
+        btnMostrarComprobantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarComprobantesActionPerformed(evt);
+            }
+        });
+
         btnDeshacerComprobante.setText("Eliminar ultimo comprobante");
         btnDeshacerComprobante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -775,10 +783,12 @@ public class Aplicacion extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Genero3)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnDeshacerComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                    .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(Genero3)
+                        .addComponent(btnMostrarComprobantes, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                        .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(197, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -790,7 +800,9 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDeshacerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(410, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnMostrarComprobantes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(357, Short.MAX_VALUE))
         );
 
         tablaComprobantes.setModel(new javax.swing.table.DefaultTableModel(
@@ -1306,6 +1318,11 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnVerUltimoComprobanteActionPerformed
 
+    private void btnMostrarComprobantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarComprobantesActionPerformed
+        pilaComprobantes.cargarDesdeBD();
+        llenarTablaComprobantes(pilaComprobantes, tablaComprobantes);
+    }//GEN-LAST:event_btnMostrarComprobantesActionPerformed
+
     private void btnDeshacerComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerComprobanteActionPerformed
         try {
             // Elimina el último comprobante de la pila
@@ -1388,6 +1405,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnDeshacerComprobante;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
+    private javax.swing.JButton btnMostrarComprobantes;
     private javax.swing.JButton btnPacientes;
     private javax.swing.JButton btnVerUltimoComprobante;
     private javax.swing.JLabel jLabel1;

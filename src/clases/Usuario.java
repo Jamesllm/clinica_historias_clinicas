@@ -18,9 +18,6 @@ public class Usuario extends Persona {
         this.especialidad = especialidad;
     }
 
-    public void asignarTurno() {
-    }
-
     public void cambiarEspecialidad(Especialidad nuevaEspecialidad) {
         this.especialidad = nuevaEspecialidad;
     }
