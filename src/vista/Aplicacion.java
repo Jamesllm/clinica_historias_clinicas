@@ -25,6 +25,7 @@ import estructuras.ListaConsultaMedica;
 import estructuras.PilaDinamicaComprobante;
 import estructuras.ArbolBBPaciente;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
 
 public class Aplicacion extends javax.swing.JFrame {
 
@@ -40,6 +41,10 @@ public class Aplicacion extends javax.swing.JFrame {
     public Aplicacion(Conexion conexionDB, Usuario usuarioActual) {
         this(conexionDB);
         this.usuarioActual = usuarioActual;
+
+        // Establecer el usuario logueado
+        txtUsuarioLogueado.setText(usuarioActual.getNombreCompleto());
+        txtUsuarioLogueado_especialidad.setText(usuarioActual.getEspecialidad().getNombre());
     }
 
     public Aplicacion(Conexion conexionDB) {
@@ -67,6 +72,7 @@ public class Aplicacion extends javax.swing.JFrame {
         cargarPacientesEnTabla();
         cargarConsultasEnTabla();
         cargarArbolBBPacientes();
+        llenarTablaComprobantes(pilaComprobantes, tablaComprobantes);
 
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
         this.addWindowListener(new WindowAdapter() {
@@ -307,6 +313,10 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_Comprobantes = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         Genero3 = new javax.swing.JLabel();
+        btnVerUltimoComprobante = new javax.swing.JButton();
+        btnDeshacerComprobante = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tablaComprobantes = new javax.swing.JTable();
         jPanel_BuscarPaciente_ABB = new javax.swing.JPanel();
         Genero4 = new javax.swing.JLabel();
         ABB_InputBuscar = new javax.swing.JTextField();
@@ -320,6 +330,10 @@ public class Aplicacion extends javax.swing.JFrame {
         btnConsultas = new javax.swing.JButton();
         btnConsultas1 = new javax.swing.JButton();
         btnConsultas2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtUsuarioLogueado_especialidad = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtUsuarioLogueado = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         MI_CerrarSesion = new javax.swing.JMenuItem();
@@ -345,7 +359,7 @@ public class Aplicacion extends javax.swing.JFrame {
         lblCambio.setText("Pacientes");
         jPanel4.add(lblCambio, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 1210, 50));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 1210, 50));
 
         jPanel_Atender.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -390,13 +404,13 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_AtenderLayout.setHorizontalGroup(
             jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_AtenderLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_atender_ahora)
                     .addComponent(lbl_atender_ahora1)
                     .addComponent(lbl_atender_siguiente)
                     .addComponent(lbl_atender_ahora2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 313, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 329, Short.MAX_VALUE)
                 .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE))
@@ -407,10 +421,10 @@ public class Aplicacion extends javax.swing.JFrame {
             .addGroup(jPanel_AtenderLayout.createSequentialGroup()
                 .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_AtenderLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel_AtenderLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addGap(19, 19, 19)
                         .addComponent(lbl_atender_ahora2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lbl_atender_ahora)
@@ -420,7 +434,7 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addComponent(lbl_atender_siguiente)))
                 .addGap(18, 18, 18)
                 .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         PanelTab.addTab("tab2", jPanel_Atender);
@@ -546,7 +560,7 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addComponent(lbl6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtApellidoMaterno, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(Genero)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -607,7 +621,7 @@ public class Aplicacion extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel_PacienteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -724,12 +738,12 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_ConsultasLayout.setVerticalGroup(
             jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_ConsultasLayout.createSequentialGroup()
-                .addGroup(jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_ConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel_ConsultasLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         PanelTab.addTab("tab2", jPanel_Consultas);
@@ -741,22 +755,56 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero3.setText("Comprobante");
 
+        btnVerUltimoComprobante.setText("Ver ultimo comprobante");
+        btnVerUltimoComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerUltimoComprobanteActionPerformed(evt);
+            }
+        });
+
+        btnDeshacerComprobante.setText("Eliminar ultimo comprobante");
+        btnDeshacerComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeshacerComprobanteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Genero3)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Genero3)
+                    .addComponent(btnDeshacerComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(197, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Genero3)
-                .addContainerGap(516, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeshacerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(410, Short.MAX_VALUE))
         );
+
+        tablaComprobantes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane7.setViewportView(tablaComprobantes);
 
         javax.swing.GroupLayout jPanel_ComprobantesLayout = new javax.swing.GroupLayout(jPanel_Comprobantes);
         jPanel_Comprobantes.setLayout(jPanel_ComprobantesLayout);
@@ -764,12 +812,18 @@ public class Aplicacion extends javax.swing.JFrame {
             jPanel_ComprobantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_ComprobantesLayout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(864, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 745, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel_ComprobantesLayout.setVerticalGroup(
             jPanel_ComprobantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_ComprobantesLayout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel_ComprobantesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel_ComprobantesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -813,15 +867,16 @@ public class Aplicacion extends javax.swing.JFrame {
             jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Genero4)
                     .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
                         .addComponent(ABB_InputBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ABB_BuscarPaciente))
-                    .addComponent(ABB_MostrarTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(ABB_BuscarPaciente)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 741, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ABB_MostrarTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel_BuscarPaciente_ABBLayout.setVerticalGroup(
@@ -829,21 +884,21 @@ public class Aplicacion extends javax.swing.JFrame {
             .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
                         .addComponent(Genero4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(ABB_BuscarPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                            .addComponent(ABB_InputBuscar))
-                        .addGap(47, 47, 47)
-                        .addComponent(ABB_MostrarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                            .addComponent(ABB_InputBuscar))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ABB_MostrarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         PanelTab.addTab("tab5", jPanel_BuscarPaciente_ABB);
 
-        getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 64, 1200, 580));
+        getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 124, 1200, 600));
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
@@ -887,7 +942,23 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas2);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 730, 30));
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 730, 30));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Especialidad:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 100, -1));
+
+        txtUsuarioLogueado_especialidad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUsuarioLogueado_especialidad.setText("jLabel2");
+        getContentPane().add(txtUsuarioLogueado_especialidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("Usuario:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 60, -1));
+
+        txtUsuarioLogueado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUsuarioLogueado.setText("jLabel2");
+        getContentPane().add(txtUsuarioLogueado, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
 
         jMenu1.setText("Cuenta");
 
@@ -1115,14 +1186,14 @@ public class Aplicacion extends javax.swing.JFrame {
         PanelTab.setSelectedIndex(3);
         lblCambio.setText("Comprobantes");
 
-       
+
     }//GEN-LAST:event_btnConsultas1ActionPerformed
 
     private void btnConsultas2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultas2ActionPerformed
-         PanelTab.setSelectedIndex(4);
+        PanelTab.setSelectedIndex(4);
         lblCambio.setText("Buscar Paciente");
 
-       
+
     }//GEN-LAST:event_btnConsultas2ActionPerformed
 
     private void ABB_BuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABB_BuscarPacienteActionPerformed
@@ -1136,7 +1207,7 @@ public class Aplicacion extends javax.swing.JFrame {
         if (paciente != null) {
             // Mostrar el paciente encontrado en la tabla
             DefaultTableModel modelo = new DefaultTableModel(
-                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+                    new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
             );
             modelo.addRow(new Object[]{
                 paciente.getDni(),
@@ -1146,14 +1217,14 @@ public class Aplicacion extends javax.swing.JFrame {
                 paciente.getGenero()
             });
             ABB_Tabla.setModel(modelo);
-            
-            javax.swing.JOptionPane.showMessageDialog(this, 
-                "Paciente encontrado: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Paciente encontrado: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "No se encontró ningún paciente con DNI: " + dni);
             // Limpiar tabla
             ABB_Tabla.setModel(new DefaultTableModel(
-                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+                    new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
             ));
         }
     }//GEN-LAST:event_ABB_BuscarPacienteActionPerformed
@@ -1166,11 +1237,11 @@ public class Aplicacion extends javax.swing.JFrame {
 
         // Obtener todos los pacientes ordenados por DNI (in-order)
         java.util.List<Paciente> pacientes = arbolBBPacientes.obtenerPacientesOrdenados();
-        
+
         DefaultTableModel modelo = new DefaultTableModel(
-            new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
         );
-        
+
         for (Paciente p : pacientes) {
             modelo.addRow(new Object[]{
                 p.getDni(),
@@ -1180,12 +1251,75 @@ public class Aplicacion extends javax.swing.JFrame {
                 p.getGenero()
             });
         }
-        
+
         ABB_Tabla.setModel(modelo);
-        
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Se muestran " + pacientes.size() + " pacientes ordenados por DNI (recorrido in-order)");
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Se muestran " + pacientes.size() + " pacientes ordenados por DNI (recorrido in-order)");
     }//GEN-LAST:event_ABB_MostrarTodosActionPerformed
+
+    // Método para llenar la tabla con los comprobantes de la pila
+    public void llenarTablaComprobantes(PilaDinamicaComprobante pila, JTable tablaComprobantes) {
+        // Definir las columnas
+        String[] columnas = {"ID", "Fecha Emisión", "Forma de Pago"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+        // Recorrer la pila
+        PilaDinamicaComprobante.Nodo actual = pila.tope;
+        while (actual != null) {
+            ComprobantePago c = actual.comprobante;
+            Object[] fila = {
+                c.getIdComprobantePago(),
+                c.getFechaEmision(), // Asegúrate de que el formato sea legible
+                c.getPago()
+            };
+            modelo.addRow(fila);
+            actual = actual.siguiente;
+        }
+
+        // Asignar el modelo a la tabla
+        tablaComprobantes.setModel(modelo);
+    }
+
+    private void btnVerUltimoComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerUltimoComprobanteActionPerformed
+        ComprobantePago ultimo = pilaComprobantes.peek();
+        if (ultimo != null) {
+            // Definir las columnas de la tabla
+            String[] columnas = {"ID", "Fecha Emisión", "Forma de Pago"};
+            javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(columnas, 0);
+
+            // Crear la fila con los datos del último comprobante
+            Object[] fila = {
+                ultimo.getIdComprobantePago(),
+                ultimo.getFechaEmision(),
+                ultimo.getPago()
+            };
+            modelo.addRow(fila);
+
+            // Asignar el modelo a la tabla
+            tablaComprobantes.setModel(modelo);
+        } else {
+            // Si no hay comprobante, puedes limpiar la tabla o mostrar un mensaje
+            javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
+            tablaComprobantes.setModel(modelo);
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay comprobantes en la pila.");
+        }
+    }//GEN-LAST:event_btnVerUltimoComprobanteActionPerformed
+
+    private void btnDeshacerComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshacerComprobanteActionPerformed
+        try {
+            // Elimina el último comprobante de la pila
+            pilaComprobantes.pop();
+
+            // Actualiza la tabla mostrando todos los comprobantes restantes
+            llenarTablaComprobantes(pilaComprobantes, tablaComprobantes);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Se eliminó el último comprobante correctamente.");
+        } catch (RuntimeException e) {
+            // Si la pila está vacía, muestra un mensaje de error
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay comprobantes para eliminar.");
+        }
+    }//GEN-LAST:event_btnDeshacerComprobanteActionPerformed
 
     private void actualizarTablaColaPacientes() {
         DefaultTableModel modelo = new DefaultTableModel(
@@ -1251,9 +1385,13 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnConsultas1;
     private javax.swing.JButton btnConsultas2;
+    private javax.swing.JButton btnDeshacerComprobante;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
     private javax.swing.JButton btnPacientes;
+    private javax.swing.JButton btnVerUltimoComprobante;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -1275,6 +1413,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JComboBox<Genero> jcbxGenero;
     private javax.swing.JComboBox<String> jcbxPaciente;
     private javax.swing.JTextArea jta_diagnostico;
@@ -1293,6 +1432,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_atender_ahora2;
     private javax.swing.JLabel lbl_atender_siguiente;
     private javax.swing.JTable tablaColaPacientes;
+    private javax.swing.JTable tablaComprobantes;
     private javax.swing.JTable tablaConsultas;
     private javax.swing.JTable tablaPacientes;
     private javax.swing.JTextField txtApellidoMaterno;
@@ -1302,5 +1442,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser txtFechaNacimiento;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
+    private javax.swing.JLabel txtUsuarioLogueado;
+    private javax.swing.JLabel txtUsuarioLogueado_especialidad;
     // End of variables declaration//GEN-END:variables
 }
