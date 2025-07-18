@@ -7,6 +7,21 @@ import conexion.Conexion;
 import clases.Genero;
 import estructuras.ArregloGenero;
 
+/**
+ * TAD ListaPaciente
+ * 
+ * Especificación informal:
+ *   Permite insertar pacientes, recorrer la lista, eliminar por DNI y contar cuántos hay.
+ *   Además, puede cargar y guardar pacientes desde/hacia la base de datos.
+ * 
+ * Especificación formal:
+ *   - agregar(e): agrega un paciente al final de la lista.
+ *   - mostrar(): recorre y muestra todos los pacientes.
+ *   - eliminarPorDni(dni): elimina un paciente por su DNI.
+ *   - cargarDesdeBD(): carga todos los pacientes desde la base de datos.
+ *   - guardarEnBD(e): guarda un paciente en la base de datos.
+ *   - actualizarEnBD(e): actualiza un paciente en la base de datos.
+ */
 public class ListaPaciente {
     public static class NodoPaciente {
         public Paciente paciente;

@@ -5,6 +5,19 @@ import java.sql.*;
 import java.util.Date;
 import conexion.Conexion;
 
+/**
+ * TAD PilaDinamicaComprobante
+ * 
+ * Especificación informal:
+ *   Permite apilar comprobantes de pago, desapilar, ver el tope, mostrar la pila y cargar desde la base de datos.
+ * 
+ * Especificación formal:
+ *   - push(e): agrega un comprobante al tope de la pila.
+ *   - pop(): elimina y retorna el comprobante en el tope de la pila.
+ *   - peek(): retorna el comprobante en el tope sin eliminarlo.
+ *   - mostrar(): muestra todos los comprobantes en la pila.
+ *   - cargarDesdeBD(): carga comprobantes desde la base de datos.
+ */
 public class PilaDinamicaComprobante {
     public static class Nodo {
         public ComprobantePago comprobante;

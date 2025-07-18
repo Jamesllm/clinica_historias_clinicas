@@ -5,6 +5,21 @@ import java.sql.*;
 import java.util.Date;
 import conexion.Conexion;
 
+/**
+ * TAD ColaDinamicaPaciente
+ * 
+ * Especificación informal:
+ *   Permite encolar pacientes, desencolar, ver el primero, recorrer la cola y cargar desde la base de datos.
+ *   Además, puede marcar pacientes como atendidos en la base de datos.
+ * 
+ * Especificación formal:
+ *   - enqueue(e): agrega un paciente al final de la cola.
+ *   - dequeue(): elimina y retorna el paciente al frente de la cola.
+ *   - peek(): retorna el paciente al frente sin eliminarlo.
+ *   - recorrer(): muestra todos los pacientes en la cola.
+ *   - cargarDesdeBD(): carga pacientes desde la base de datos.
+ *   - marcarComoAtendido(dni): marca un paciente como atendido en la base de datos.
+ */
 public class ColaDinamicaPaciente {
     public static class Nodo {
         public Paciente paciente;
