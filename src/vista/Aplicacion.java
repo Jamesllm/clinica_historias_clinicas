@@ -396,7 +396,7 @@ public class Aplicacion extends javax.swing.JFrame {
                     .addComponent(lbl_atender_ahora1)
                     .addComponent(lbl_atender_siguiente)
                     .addComponent(lbl_atender_ahora2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 313, Short.MAX_VALUE)
                 .addGroup(jPanel_AtenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAtenderPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE))
@@ -597,7 +597,7 @@ public class Aplicacion extends javax.swing.JFrame {
         jPanel_PacienteLayout.setHorizontalGroup(
             jPanel_PacienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_PacienteLayout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 305, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -780,9 +780,12 @@ public class Aplicacion extends javax.swing.JFrame {
         Genero4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Genero4.setText("Ingrese DNI");
 
-        ABB_InputBuscar.setText("jTextField1");
-
         ABB_BuscarPaciente.setText("Buscar");
+        ABB_BuscarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ABB_BuscarPacienteActionPerformed(evt);
+            }
+        });
 
         ABB_Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -798,26 +801,26 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane6.setViewportView(ABB_Tabla);
 
         ABB_MostrarTodos.setText("Mostrar todos");
+        ABB_MostrarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ABB_MostrarTodosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel_BuscarPaciente_ABBLayout = new javax.swing.GroupLayout(jPanel_BuscarPaciente_ABB);
         jPanel_BuscarPaciente_ABB.setLayout(jPanel_BuscarPaciente_ABBLayout);
         jPanel_BuscarPaciente_ABBLayout.setHorizontalGroup(
             jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
-                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(14, 14, 14)
+                .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Genero4)
                     .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Genero4)
-                            .addGroup(jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
-                                .addComponent(ABB_InputBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ABB_BuscarPaciente)))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_BuscarPaciente_ABBLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(ABB_MostrarTodos)
-                        .addGap(84, 84, 84)))
+                        .addComponent(ABB_InputBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ABB_BuscarPaciente))
+                    .addComponent(ABB_MostrarTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 741, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -833,8 +836,8 @@ public class Aplicacion extends javax.swing.JFrame {
                         .addGroup(jPanel_BuscarPaciente_ABBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(ABB_BuscarPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                             .addComponent(ABB_InputBuscar))
-                        .addGap(76, 76, 76)
-                        .addComponent(ABB_MostrarTodos)))
+                        .addGap(47, 47, 47)
+                        .addComponent(ABB_MostrarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 

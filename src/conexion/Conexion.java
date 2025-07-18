@@ -9,14 +9,14 @@ public class Conexion {
     private Connection conexion;
     
 // Local
-//    private final String URL = "jdbc:postgresql://localhost:5432/historias_clinicas";
-//    private final String USUARIO = "postgres";
-//    private final String CLAVE = "Peru123...";
+    private final String URL = "jdbc:postgresql://localhost:5432/historias_clinicas";
+    private final String USUARIO = "postgres";
+    private final String CLAVE = "Peru123...";
 
 // Publica    
-    private final String URL = "jdbc:postgresql://dpg-d1sihke3jp1c73al14t0-a.oregon-postgres.render.com/historias_clinicas_p3h4";
-    private final String USUARIO = "historias_clinicas_p3h4_user";
-    private final String CLAVE = "GNlvIv83jSCtsN1ktS4zN988h2FFLvc2";
+//    private final String URL = "jdbc:postgresql://dpg-d1sihke3jp1c73al14t0-a.oregon-postgres.render.com/historias_clinicas_p3h4";
+//    private final String USUARIO = "historias_clinicas_p3h4_user";
+//    private final String CLAVE = "GNlvIv83jSCtsN1ktS4zN988h2FFLvc2";
 
     private Conexion() {
         try {
