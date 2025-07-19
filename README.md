@@ -19,7 +19,7 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
 - **Estructuras de Datos**: Implementación de estructuras avanzadas
 - **PlantUML**: Diagrama de clases del sistema
 
-## 📊 Estructuras de Datos Implementadas
+## Estructuras de Datos Implementadas
 
 ### 1. **Arreglo Unidimensional** - `ArregloGenero`
 - **Propósito**: Almacenar géneros disponibles en el sistema
@@ -54,7 +54,7 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
 - **Complejidad**: O(log n) promedio, O(n) peor caso
 - **Aplicación**: Búsqueda rápida de pacientes
 
-### 7. **Árbol AVL** - `ArbolAVLPaciente` ⭐ **NUEVO**
+### 7. **Árbol AVL** - `ArbolAVLPaciente`
 - **Propósito**: Búsqueda ultra-eficiente de pacientes por DNI
 - **Operaciones**: Insertar, buscar, recorrido in-order, balanceo automático
 - **Complejidad**: O(log n) garantizado en todos los casos
@@ -64,7 +64,7 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
   - Implementa las 4 rotaciones: LL, RR, LR, RL
 - **Aplicación**: Búsqueda optimizada de pacientes
 
-## 🗂️ Clases del Sistema
+## Clases del Sistema
 
 ### **Clases de Entidad**
 - `Paciente`: Datos personales y médicos del paciente
@@ -83,7 +83,7 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
 - `Conexion`: Gestión de conexión a PostgreSQL
 - `LoginService`: Servicio de autenticación
 
-## 🗄️ Base de Datos
+## Base de Datos
 
 ### **Script SQL**
 Ver archivo `src/conexion/base.sql`
@@ -92,39 +92,7 @@ Ver archivo `src/conexion/base.sql`
 - **public**: Tablas principales del sistema
 - **clinica**: Esquema específico para datos clínicos
 
-## 🚀 Instalación y Ejecución
-
-### **Requisitos**
-- Java JDK 8 o superior
-- PostgreSQL 12 o superior
-- NetBeans IDE (recomendado)
-
-### **Pasos de Instalación**
-
-1. **Configurar Base de Datos**
-   ```sql
-   -- Crear base de datos
-   CREATE DATABASE clinica_historias;
-   
-   -- Ejecutar script de creación
-   \i src/conexion/base.sql
-   ```
-
-2. **Configurar Conexión**
-   - Editar `src/conexion/Conexion.java`
-   - Actualizar credenciales de PostgreSQL
-
-3. **Compilar y Ejecutar**
-   ```bash
-   # Compilar desde NetBeans
-   # O desde línea de comandos
-   javac -cp "lib/*" src/**/*.java
-   
-   # Ejecutar
-   java -cp "lib/*:src" vista.Login
-   ```
-
-## 📈 Ventajas del Sistema
+## Ventajas del Sistema
 
 ### **Eficiencia en Búsquedas**
 - **ABB**: Búsqueda O(log n) promedio
@@ -141,20 +109,11 @@ Ver archivo `src/conexion/base.sql`
 - Balanceo automático en árboles AVL
 - Persistencia en base de datos
 
-## 👨‍💻 Autor
-**Ronal Llapapasca Montes**  
+## 👨‍💻 Autores
+- **Ronal Llapapasca Montes**  
+- **Kevin Stuart Izquierdo castro**  
+- **Piero Payac Monteza**  
+- **Angel Santiago Trillo**  
+
 *Universidad Tecnológica del Perú*  
 *Algoritmos y Estructuras de Datos - Ciclo I 2025*
-
-## 📝 Notas Técnicas
-
-- **Patrón MVC**: Separación de lógica, vista y datos
-- **POO**: Herencia, encapsulamiento, polimorfismo
-- **Persistencia**: Conexión directa a PostgreSQL
-- **Interfaz**: Swing para GUI moderna
-
-## 🔄 Versiones
-
-- **v1.0**: Implementación básica con ABB
-- **v1.1**: Agregado árbol AVL para búsquedas optimizadas
-- **v1.2**: Limpieza de código y documentación completa
