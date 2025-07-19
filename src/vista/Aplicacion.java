@@ -16,6 +16,7 @@ import clases.Usuario;
 import clases.Paciente;
 import clases.ConsultaMedica;
 import clases.ComprobantePago;
+import estructuras.ArbolAVLPaciente;
 
 // Estructuras
 import estructuras.ArregloGenero;
@@ -37,6 +38,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private ColaDinamicaPaciente colaPacientes;
     private PilaDinamicaComprobante pilaComprobantes;
     private ArbolBBPaciente arbolBBPacientes;
+    private ArbolAVLPaciente arbolAVLPacientes;
 
     public Aplicacion(Conexion conexionDB, Usuario usuarioActual) {
         this(conexionDB);
@@ -63,6 +65,7 @@ public class Aplicacion extends javax.swing.JFrame {
         colaPacientes = new ColaDinamicaPaciente();
         pilaComprobantes = new PilaDinamicaComprobante();
         arbolBBPacientes = new ArbolBBPaciente();
+        arbolAVLPacientes = new ArbolAVLPaciente();
 
         // Cargar datos desde la BD
         colaPacientes.cargarDesdeBD();
@@ -72,6 +75,7 @@ public class Aplicacion extends javax.swing.JFrame {
         cargarPacientesEnTabla();
         cargarConsultasEnTabla();
         cargarArbolBBPacientes();
+        cargarArbolVLPacientes();
         llenarTablaComprobantes(pilaComprobantes, tablaComprobantes);
 
         // Agregar listener para cerrar la conexión cuando se cierre la ventana
@@ -251,6 +255,13 @@ public class Aplicacion extends javax.swing.JFrame {
         arbolBBPacientes.cargarDesdeLista(listaPaciente);
     }
 
+    private void cargarArbolVLPacientes() {
+        // Cargar pacientes desde la BD a la lista
+        listaPaciente.cargarDesdeBD();
+        // Cargar la lista en el árbol ABB
+        arbolAVLPacientes.cargarDesdeLista(listaPaciente);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -325,12 +336,20 @@ public class Aplicacion extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         ABB_Tabla = new javax.swing.JTable();
         ABB_MostrarTodos = new javax.swing.JButton();
+        jPanel_BuscarPaciente_AVL = new javax.swing.JPanel();
+        Genero5 = new javax.swing.JLabel();
+        AVL_InputBuscar = new javax.swing.JTextField();
+        AVL_BuscarPaciente = new javax.swing.JToggleButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        AVL_Tabla = new javax.swing.JTable();
+        AVL_MostrarTodos = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         btnAtender = new javax.swing.JButton();
         btnPacientes = new javax.swing.JButton();
         btnConsultas = new javax.swing.JButton();
         btnConsultas1 = new javax.swing.JButton();
         btnConsultas2 = new javax.swing.JButton();
+        btnConsultas3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtUsuarioLogueado_especialidad = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -785,10 +804,9 @@ public class Aplicacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnDeshacerComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(Genero3)
-                        .addComponent(btnMostrarComprobantes, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                        .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(Genero3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnMostrarComprobantes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                    .addComponent(btnVerUltimoComprobante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(197, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -910,6 +928,75 @@ public class Aplicacion extends javax.swing.JFrame {
 
         PanelTab.addTab("tab5", jPanel_BuscarPaciente_ABB);
 
+        jPanel_BuscarPaciente_AVL.setBackground(new java.awt.Color(255, 255, 255));
+
+        Genero5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Genero5.setText("Ingrese DNI");
+
+        AVL_BuscarPaciente.setText("Buscar");
+        AVL_BuscarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AVL_BuscarPacienteActionPerformed(evt);
+            }
+        });
+
+        AVL_Tabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"
+            }
+        ));
+        jScrollPane8.setViewportView(AVL_Tabla);
+
+        AVL_MostrarTodos.setText("Mostrar todos");
+        AVL_MostrarTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AVL_MostrarTodosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel_BuscarPaciente_AVLLayout = new javax.swing.GroupLayout(jPanel_BuscarPaciente_AVL);
+        jPanel_BuscarPaciente_AVL.setLayout(jPanel_BuscarPaciente_AVLLayout);
+        jPanel_BuscarPaciente_AVLLayout.setHorizontalGroup(
+            jPanel_BuscarPaciente_AVLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_BuscarPaciente_AVLLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel_BuscarPaciente_AVLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Genero5)
+                    .addGroup(jPanel_BuscarPaciente_AVLLayout.createSequentialGroup()
+                        .addComponent(AVL_InputBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AVL_BuscarPaciente)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel_BuscarPaciente_AVLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(AVL_MostrarTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        jPanel_BuscarPaciente_AVLLayout.setVerticalGroup(
+            jPanel_BuscarPaciente_AVLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_BuscarPaciente_AVLLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel_BuscarPaciente_AVLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel_BuscarPaciente_AVLLayout.createSequentialGroup()
+                        .addComponent(Genero5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel_BuscarPaciente_AVLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(AVL_BuscarPaciente, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                            .addComponent(AVL_InputBuscar))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AVL_MostrarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        PanelTab.addTab("tab5", jPanel_BuscarPaciente_AVL);
+
         getContentPane().add(PanelTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 124, 1200, 600));
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -954,7 +1041,15 @@ public class Aplicacion extends javax.swing.JFrame {
         });
         jPanel5.add(btnConsultas2);
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 730, 30));
+        btnConsultas3.setText("Buscar Paciente AVL");
+        btnConsultas3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultas3ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnConsultas3);
+
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 890, 30));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Especialidad:");
@@ -1203,9 +1298,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void btnConsultas2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultas2ActionPerformed
         PanelTab.setSelectedIndex(4);
-        lblCambio.setText("Buscar Paciente");
-
-
+        lblCambio.setText("Buscar Paciente ABB");
     }//GEN-LAST:event_btnConsultas2ActionPerformed
 
     private void ABB_BuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABB_BuscarPacienteActionPerformed
@@ -1338,6 +1431,73 @@ public class Aplicacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeshacerComprobanteActionPerformed
 
+    private void AVL_BuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AVL_BuscarPacienteActionPerformed
+        String dni = AVL_InputBuscar.getText().trim();
+        if (dni.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Debe ingresar un DNI para buscar.");
+            return;
+        }
+
+        Paciente paciente = arbolAVLPacientes.buscar(dni);
+        if (paciente != null) {
+            // Mostrar el paciente encontrado en la tabla
+            DefaultTableModel modelo = new DefaultTableModel(
+                    new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+            );
+            modelo.addRow(new Object[]{
+                paciente.getDni(),
+                paciente.getNombre(),
+                paciente.getApellidoPaterno(),
+                paciente.getApellidoMaterno(),
+                paciente.getGenero()
+            });
+            AVL_Tabla.setModel(modelo);
+
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Paciente encontrado: " + paciente.getNombre() + " " + paciente.getApellidoPaterno());
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontró ningún paciente con DNI: " + dni);
+            // Limpiar tabla
+            ABB_Tabla.setModel(new DefaultTableModel(
+                    new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+            ));
+        }
+    }//GEN-LAST:event_AVL_BuscarPacienteActionPerformed
+
+    private void AVL_MostrarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AVL_MostrarTodosActionPerformed
+        if (arbolAVLPacientes.estaVacio()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay pacientes en el árbol ABB.");
+            return;
+        }
+
+        // Obtener todos los pacientes ordenados por DNI (in-order)
+        java.util.List<Paciente> pacientes = arbolAVLPacientes.obtenerPacientesOrdenados();
+
+        DefaultTableModel modelo = new DefaultTableModel(
+                new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
+        );
+
+        for (Paciente p : pacientes) {
+            modelo.addRow(new Object[]{
+                p.getDni(),
+                p.getNombre(),
+                p.getApellidoPaterno(),
+                p.getApellidoMaterno(),
+                p.getGenero()
+            });
+        }
+
+        AVL_Tabla.setModel(modelo);
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Se muestran " + pacientes.size() + " pacientes ordenados");
+    }//GEN-LAST:event_AVL_MostrarTodosActionPerformed
+
+    private void btnConsultas3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultas3ActionPerformed
+        PanelTab.setSelectedIndex(5);
+        lblCambio.setText("Buscar Paciente AVL");
+    }//GEN-LAST:event_btnConsultas3ActionPerformed
+
     private void actualizarTablaColaPacientes() {
         DefaultTableModel modelo = new DefaultTableModel(
                 new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Fecha y hora entrada"}, 0
@@ -1388,11 +1548,16 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JTextField ABB_InputBuscar;
     private javax.swing.JButton ABB_MostrarTodos;
     private javax.swing.JTable ABB_Tabla;
+    private javax.swing.JToggleButton AVL_BuscarPaciente;
+    private javax.swing.JTextField AVL_InputBuscar;
+    private javax.swing.JButton AVL_MostrarTodos;
+    private javax.swing.JTable AVL_Tabla;
     private javax.swing.JLabel Genero;
     private javax.swing.JLabel Genero1;
     private javax.swing.JLabel Genero2;
     private javax.swing.JLabel Genero3;
     private javax.swing.JLabel Genero4;
+    private javax.swing.JLabel Genero5;
     private javax.swing.JMenuItem MI_CerrarSesion;
     private javax.swing.JTabbedPane PanelTab;
     private javax.swing.JButton btnActualizarConsulta;
@@ -1402,6 +1567,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JButton btnConsultas;
     private javax.swing.JButton btnConsultas1;
     private javax.swing.JButton btnConsultas2;
+    private javax.swing.JButton btnConsultas3;
     private javax.swing.JButton btnDeshacerComprobante;
     private javax.swing.JButton btnGuardarConsulta;
     private javax.swing.JButton btnGuardarPaciente;
@@ -1422,6 +1588,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel_Atender;
     private javax.swing.JPanel jPanel_BuscarPaciente_ABB;
+    private javax.swing.JPanel jPanel_BuscarPaciente_AVL;
     private javax.swing.JPanel jPanel_Comprobantes;
     private javax.swing.JPanel jPanel_Consultas;
     private javax.swing.JPanel jPanel_Paciente;
@@ -1432,6 +1599,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JComboBox<Genero> jcbxGenero;
     private javax.swing.JComboBox<String> jcbxPaciente;
     private javax.swing.JTextArea jta_diagnostico;
