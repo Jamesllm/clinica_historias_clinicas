@@ -15,49 +15,40 @@ Este sistema permite registrar pacientes, gestionar usuarios (personal de salud)
 
 - **Java (POO)**: Programación orientada a objetos
 - **PostgreSQL**: Base de datos relacional con schemas
-- **Swing**: Interfaz gráfica de usuario
 - **Estructuras de Datos**: Implementación de estructuras avanzadas
-- **PlantUML**: Diagrama de clases del sistema
 
 ## Estructuras de Datos Implementadas
 
 ### 1. **Arreglo Unidimensional** - `ArregloGenero`
 - **Propósito**: Almacenar géneros disponibles en el sistema
 - **Operaciones**: Carga desde BD, consulta por ID
-- **Complejidad**: O(1) para acceso directo
 
 ### 2. **Lista Enlazada Simple** - `ListaPaciente`
 - **Propósito**: Gestión de pacientes del sistema
 - **Operaciones**: Insertar, actualizar, eliminar, buscar, cargar desde BD
-- **Complejidad**: O(n) para búsqueda, O(1) para inserción al inicio
 
 ### 3. **Lista Enlazada Simple** - `ListaConsultaMedica`
 - **Propósito**: Historial de consultas médicas
 - **Operaciones**: Insertar, consultar, cargar desde BD
-- **Complejidad**: O(n) para búsqueda, O(1) para inserción
 
 ### 4. **Cola Dinámica** - `ColaDinamicaPaciente`
 - **Propósito**: Sistema de atención de pacientes (FIFO)
 - **Operaciones**: Enqueue, Dequeue, Peek, cargar desde BD
-- **Complejidad**: O(1) para enqueue/dequeue
 - **Aplicación**: Control de turnos de atención médica
 
 ### 5. **Pila Dinámica** - `PilaDinamicaComprobante`
 - **Propósito**: Gestión de comprobantes de pago (LIFO)
 - **Operaciones**: Push, Pop, Peek, cargar desde BD
-- **Complejidad**: O(1) para push/pop
 - **Aplicación**: Control de pagos y facturación
 
 ### 6. **Árbol Binario de Búsqueda (ABB)** - `ArbolABBPaciente`
 - **Propósito**: Búsqueda eficiente de pacientes por DNI
 - **Operaciones**: Insertar, buscar, recorrido in-order
-- **Complejidad**: O(log n) promedio, O(n) peor caso
 - **Aplicación**: Búsqueda rápida de pacientes
 
 ### 7. **Árbol AVL** - `ArbolAVLPaciente`
 - **Propósito**: Búsqueda ultra-eficiente de pacientes por DNI
 - **Operaciones**: Insertar, buscar, recorrido in-order, balanceo automático
-- **Complejidad**: O(log n) garantizado en todos los casos
 - **Características**: 
   - Balanceo automático mediante rotaciones
   - Altura máxima logarítmica
@@ -95,8 +86,8 @@ Ver archivo `src/conexion/base.sql`
 ## Ventajas del Sistema
 
 ### **Eficiencia en Búsquedas**
-- **ABB**: Búsqueda O(log n) promedio
-- **AVL**: Búsqueda O(log n) garantizada
+- **ABB**: Búsqueda promedio
+- **AVL**: Búsqueda garantizada
 - **Comparación**: AVL mantiene mejor balance que ABB
 
 ### **Gestión de Memoria**
