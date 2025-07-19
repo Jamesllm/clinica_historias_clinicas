@@ -17,7 +17,6 @@ public class ConsultaMedica {
     private Date fechaRegistro;
     private Paciente paciente;
     private Usuario usuario;
-    private List<Medicamento> medicamentos;
     private ComprobantePago comprobantePago;
 
     public ConsultaMedica(int idConsultaMedica, String diagnostico, String tratamiento, Date fechaRegistro, Paciente paciente, Usuario usuario, ComprobantePago comprobantePago) {
@@ -28,7 +27,6 @@ public class ConsultaMedica {
         this.paciente = paciente;
         this.usuario = usuario;
         this.comprobantePago = comprobantePago;
-        this.medicamentos = new ArrayList<>();
     }
 
     public void registrarConsulta() {
@@ -41,10 +39,6 @@ public class ConsultaMedica {
 
     public void agregarTratamiento(String nuevoTratamiento) {
         this.tratamiento = nuevoTratamiento;
-    }
-
-    public void agregarMedicamento(Medicamento medicamento) {
-        medicamentos.add(medicamento);
     }
 
     // Getters y setters
@@ -94,14 +88,6 @@ public class ConsultaMedica {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public List<Medicamento> getMedicamentos() {
-        return medicamentos;
-    }
-
-    public void setMedicamentos(List<Medicamento> medicamentos) {
-        this.medicamentos = medicamentos;
     }
 
     public ComprobantePago getComprobantePago() {

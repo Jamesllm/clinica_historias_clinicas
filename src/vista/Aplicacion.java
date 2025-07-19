@@ -24,7 +24,7 @@ import estructuras.ListaPaciente;
 import estructuras.ColaDinamicaPaciente;
 import estructuras.ListaConsultaMedica;
 import estructuras.PilaDinamicaComprobante;
-import estructuras.ArbolBBPaciente;
+import estructuras.ArbolABBPaciente;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
@@ -37,7 +37,7 @@ public class Aplicacion extends javax.swing.JFrame {
     private ListaConsultaMedica listaConsultaMedica;
     private ColaDinamicaPaciente colaPacientes;
     private PilaDinamicaComprobante pilaComprobantes;
-    private ArbolBBPaciente arbolBBPacientes;
+    private ArbolABBPaciente arbolBBPacientes;
     private ArbolAVLPaciente arbolAVLPacientes;
 
     public Aplicacion(Conexion conexionDB, Usuario usuarioActual) {
@@ -64,7 +64,7 @@ public class Aplicacion extends javax.swing.JFrame {
         listaConsultaMedica = new ListaConsultaMedica();
         colaPacientes = new ColaDinamicaPaciente();
         pilaComprobantes = new PilaDinamicaComprobante();
-        arbolBBPacientes = new ArbolBBPaciente();
+        arbolBBPacientes = new ArbolABBPaciente();
         arbolAVLPacientes = new ArbolAVLPaciente();
 
         // Cargar datos desde la BD
@@ -1458,7 +1458,7 @@ public class Aplicacion extends javax.swing.JFrame {
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "No se encontró ningún paciente con DNI: " + dni);
             // Limpiar tabla
-            ABB_Tabla.setModel(new DefaultTableModel(
+            AVL_Tabla.setModel(new DefaultTableModel(
                     new Object[]{"DNI", "Nombre", "Apellido Paterno", "Apellido Materno", "Género"}, 0
             ));
         }
@@ -1466,7 +1466,7 @@ public class Aplicacion extends javax.swing.JFrame {
 
     private void AVL_MostrarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AVL_MostrarTodosActionPerformed
         if (arbolAVLPacientes.estaVacio()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "No hay pacientes en el árbol ABB.");
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay pacientes en el árbol AVL.");
             return;
         }
 

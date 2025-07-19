@@ -4,7 +4,7 @@ import clases.Paciente;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArbolBBPaciente {
+public class ArbolABBPaciente {
     public static class Nodo {
         public Paciente paciente;
         public Nodo izquierdo, derecho;
@@ -18,7 +18,7 @@ public class ArbolBBPaciente {
 
     private Nodo raiz;
 
-    public ArbolBBPaciente() {
+    public ArbolABBPaciente() {
         raiz = null;
     }
 
